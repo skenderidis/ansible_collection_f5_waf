@@ -1,0 +1,98 @@
+---
+- name: Download a WAF Policy from the Git repo
+  hosts: localhost
+  tasks:
+    - name: Clean-up. Deleting the Git folder and its contents
+      file:
+        path: /git
+        state: absent
+
+    - name: Creating a new Git folder
+      file:
+        path: /git
+        state: directory
+
+    - name: Clone Git repository with NAP Policies 
+      git:
+        repo: https://github.com/nap/waf-policies.git  # Replace with the URL of the Git repo
+        dest: /git  # Specify the local directory where you want to clone the repo
+        version: main  # Specify the branch, tag, or commit you want to fetch
+
+    - name: Check if the file exists
+      stat:
+        path: /path/to/destination_directory/path/to/file.txt
+      register: file_stat_result
+      when: git_clone_result.changed  # Only check if the repository was cloned
+
+    - name: Display the file existence status
+      debug:
+        msg: "File exists: {{ file_stat_result.stat.exists | default(false) }}"
+
+
+    - name: Run My NAP Module
+      signatures:
+        format: format
+        signature_id: 123123
+        policy_path: "policy2.json"
+        #entity_type: urls
+        #entity: "/test.php"
+        format: json
+      register: module_output
+
+
+    - name: Save registered output to a file
+      copy:
+        content: "{{ module_output.policy }}"
+        dest: /git/policy.txt
+
+
+    - name: Copy file from Git repo to local directory
+      copy:
+        src: /git/yourfile.ext  # Replace with the path to the file you want to download
+        dest: /moduleXXX/yourfile.ext  # Specify the local destination where you want to save the file
+
+
+    - name: Create a new branch
+      git:
+        repo: /path/to/destination  # Specify the path to the local Git repository
+        dest: my_new_branch  # Replace with the name of the new branch
+        state: branch
+
+    - name: Checkout the new branch
+      git:
+        repo: /path/to/destination  # Specify the path to the local Git repository
+        dest: my_new_branch  # Replace with the name of the new branch
+        force: yes
+
+    - name: Update the file content
+      copy:
+        src: /path/to/local/directory/yourfile.ext  # Replace with the path to the file you want to update
+        dest: /path/to/destination/yourfile.ext  # Specify the path within the Git repository where you want to update the file
+
+    - name: Commit changes to the new branch
+      git:
+        repo: /path/to/destination  # Specify the path to the local Git repository
+        msg: "Update file content on my_new_branch"  # Commit message
+        force: yes
+
+    - name: Push changes to Git repo on the new branch
+      git:
+        repo: /path/to/destination  # Specify the path to the local Git repository
+        remote: origin
+        push: yes
+        push_default: "refs/heads/my_new_branch"  # Specify the name of the new branch to push
+
+
+#    - name: Create a merge request
+#      merge:
+#        repo: /path/to/destination  # Specify the path to the local Git repository
+#        remote: origin
+#        push: yes
+#        push_default: "refs/heads/my_new_branch"  # Specify the name of the new branch to push
+
+
+
+
+
+
+
