@@ -59,7 +59,7 @@ def override_signature_global(policy_json, signatureId, enabled):
       if check_value(policy_json["policy"]["signatures"][x], "enabled", enabled):
         return policy_json, False, "Alert! SignatureID: " + str(signatureId) + " already configured"
       else:
-        policy_json["policy"]["signatures"][x]["enabled"] = str(enabled).lower()
+        policy_json["policy"]["signatures"][x]["enabled"] = enabled
     else:
       policy_json["policy"]["signatures"].append(json.loads('{"signatureId": '+str(signatureId)+',"enabled": '+str(enabled).lower()+'}'))
   else:
@@ -77,7 +77,7 @@ def override_signature_on_entity(policy_json, signatureId, location, entity_name
 					if check_value(policy_json["policy"][location][x]["signatureOverrides"][y], "enabled", enabled):
 						return policy_json, False, "Alert! SignatureID: "+ str(signatureId)+" on entity " + entity_name+ " is already configured"
 					else:					
-						policy_json["policy"][location][x]["signatureOverrides"][y]["enabled"] = str(enabled).lower()
+						policy_json["policy"][location][x]["signatureOverrides"][y]["enabled"] = enabled
 				else:
 					policy_json["policy"][location][x]["signatureOverrides"].append(json.loads('{"signatureId": '+str(signatureId)+',"enabled": '+str(enabled).lower()+'}'))
 			else:
@@ -97,10 +97,12 @@ def main():
             format=dict(type='str', required=True),
             entity_type=dict(type='str', required=False),
             entity=dict(type='str', required=False),
+            enabled=dict(type='bool', required=False, default=False)
         )
     )
 
     policy_path = module.params['policy_path']
+    enabled = module.params['enabled']
     sig_id = module.params['signature_id']
     if module.params['format'] is not None:
       format = module.params['format'].lower()
@@ -112,6 +114,7 @@ def main():
       entity_type = module.params['entity_type']
     entity = module.params['entity']
 
+    
     if entity_type != None and entity_type != "urls" and entity_type != "cookies" and entity_type != "headers" and entity_type != "parameters":
       module.fail_json(msg=f"'{entity_type}' is  not a valid value for the 'entity_type' variable. It can be any of the following: headers/cookies/parameters/urls or do not define it for disabling the signature globally.")
     
@@ -136,22 +139,15 @@ def main():
 
 
     if entity_type is None or entity is None :
-      jData, result, msg = override_signature_global(jData,sig_id,False)
+      jData, result, msg = override_signature_global(jData,sig_id,enabled)
     else :
-      jData, result, msg = override_signature_on_entity(jData,sig_id,entity_type,entity,False)
+      jData, result, msg = override_signature_on_entity(jData,sig_id,entity_type,entity,enabled)
 
     if result :
       module.exit_json(changed=True, msg=msg, policy=jData)
     else :
       module.exit_json(changed=False, msg=msg, policy=jData)
-    
-#    if (format == "yaml"):
-#      yData["spec"] = jData
-#      with open('policy_mod', 'w', encoding='utf-8') as f:
-#        yaml.dump(yData, f, indent=2)
-#    else:
-#      with open('policy_mod', 'w', encoding='utf-8') as f:
-#        json.dump(jData, f, ensure_ascii=False, indent=2)
+
 
 if __name__ == '__main__':
     main()
