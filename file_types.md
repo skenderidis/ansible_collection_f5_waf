@@ -1,43 +1,68 @@
 # File_types module
 
-The **`file_types`** ansible module helps `Allow/Disallow` file type extensions on a NAP policy.
+The **`file_types`** module helps `Allow/Disallow` file type extensions on a NAP policy.
 
 Below you can find the input/outout parameters for the module
-
-
-The `file_types` module helps disable/enable file extensions that have been configured on the `disallowed` list or have not been configured on the explicit `allowed` list. 
 
 Input:
 - **policy_path** (location of policy file)
 - **filetype** (extensions that you want to disable/enable)
-- **format** (json or yaml)
+- **format** (*json* or *yaml*)
 - **enabled** (True or False. Defaults to True)
 
 Output
-- **policy** (the output of the policy)
+- **policy** (Policy output)
 - **msg** (Message from the module)
-- **changed** (if there was a change in the configuration)
+- **changed** (True/False)
 
-### Examples of using the module on a playbook
+## Examples of using the module on a playbook
 
-1. Disable a signature globaly
-```yml
-- name: File Types
-  hosts: localhost
-  tasks:
-    - name: Allow File type
-      signatures:
-        filetype: "bak"
-        policy_path: "policy.yaml"
-        format: yaml
-        enabled: True
-      register: result
+### Allow a disallowed file type (php)
+  Input policy `app1_waf.yaml`
+  
+  ```yaml
+  apiVersion: appprotect.f5.com/v1beta1
+  kind: APPolicy
+  metadata:
+    name: app1_waf
+  spec:
+    policy:
+      applicationLanguage: utf-8
+      enforcementMode: blocking
+      name: app1_waf
+      template:
+        name: POLICY_TEMPLATE_NGINX_BASE
+  ```
 
-    - name: Display Module Output
-      debug:
-        var: result.policy
 
-    - name: Display Module Output
-      debug:
-        var: result.msg
-```
+  Playbook to enable the file type **php**.
+  ```yaml
+  - name: File Types
+    hosts: localhost
+    tasks:
+      - name: Enable the filetype
+        file_types:
+          filetype: php
+          enabled: True
+          policy_path: "app1_waf.yaml"
+          format: yaml
+        register: result
+  ```
+
+  Updated policy.
+  ```yaml
+  apiVersion: appprotect.f5.com/v1beta1
+  kind: APPolicy
+  metadata:
+    name: app1_waf
+  spec:
+    policy:
+      applicationLanguage: utf-8
+      enforcementMode: blocking
+      filetypes:                  ### Changes added by ansible module
+      - allowed: true             ### Changes added by ansible module
+        name: php                 ### Changes added by ansible module
+      name: app1_waf
+      template:
+        name: POLICY_TEMPLATE_NGINX_BASE
+  ```
