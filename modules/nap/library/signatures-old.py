@@ -104,23 +104,26 @@ def main():
     policy_path = module.params['policy_path']
     enabled = module.params['enabled']
     sig_id = module.params['signature_id']
-    format = module.params['format'].lower()
-    entity = module.params['entity']
+    if module.params['format'] is not None:
+      format = module.params['format'].lower()
+    else:
+      entity_type = module.params['format']
     if module.params['entity_type'] is not None:
       entity_type = module.params['entity_type'].lower()
     else:
       entity_type = module.params['entity_type']
+    entity = module.params['entity']
 
-    allowed_values = ["urls", "cookies", "headers", "parameters"]
-
-    if entity_type not in allowed_values :
-      module.fail_json(msg=f"'{entity_type}' is  not a valid value for the 'entity_type' variable. It can be any of the following: {list(allowed_values)}.")
-  
+    
+    if entity_type != None and entity_type != "urls" and entity_type != "cookies" and entity_type != "headers" and entity_type != "parameters":
+      module.fail_json(msg=f"'{entity_type}' is  not a valid value for the 'entity_type' variable. It can be any of the following: headers/cookies/parameters/urls or do not define it for disabling the signature globally.")
+    
     try:
         with open(policy_path, 'r') as file:
           policy = file.read()
     except Exception as e:
         module.fail_json(msg=f"Failed to read file: {str(e)}")
+
 
     if (format == "yaml"):
       try:
@@ -144,6 +147,7 @@ def main():
       module.exit_json(changed=True, msg=msg, policy=jData)
     else :
       module.exit_json(changed=False, msg=msg, policy=jData)
-    
+
+
 if __name__ == '__main__':
     main()
