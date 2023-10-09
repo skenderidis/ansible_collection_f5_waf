@@ -13,11 +13,10 @@ Violations
 | VIOL_URL_LENGTH | file_length  |  100%  | [Examples](file_length.md) |
 | VIOL_HTTP_PROTOCOL | http_protocol  |  100%  | [Examples](http_protocol.md) |
 | VIOL_EVASION | evasion  |  100%  | [Examples](evasion.md) |
-
-| VIOL_URL  |  url  |  100%  | [Examples](#)  |
-| VIOL_METHOD  |  method  |  100%  | [Examples](#)  |
-| VIOL_HEADER_LENGTH  |    |  100%  | [Examples](#)  |
-| VIOL_COOKIE_LENGTH  |    |  100%  | [Examples](#)  |
+| VIOL_URL  |  url  |  100%  | [Examples](url.md) |
+| VIOL_METHOD  |  method  |  100%  | [Examples](method.md) |
+| VIOL_HEADER_LENGTH  |    |  100%  | [Examples](header_length.md) |
+| VIOL_COOKIE_LENGTH  |    |  100%  | [Examples](cookie_length.md) |
 | VIOL_COOKIE_MODIFIED  |    | 100%  | [Pending]() |
 | VIOL_HTTP_RESPONSE_STATUS  |    | 100%  | [Pending]() |
 | VIOL_THREAT_CAMPAIGN  |    |  100%  | [Pending]() |
