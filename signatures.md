@@ -1,10 +1,11 @@
 # Signatures module
 
-The **`signatures`** module helps disable/enable signatures either globally or on a specific entity. The entities supported by NAP are 
+The **`signatures`** module has been created to assist with the false-positive of the `VIOL_ATTACK_SIGNATURE` violations. It can disable/enable signatures either globally or on a specific entity. The supported entities as per the NGINX App Protect configuration are the following: 
 1. `urls`
 2. `headers`
 3. `parameters`
 4. `cookies`
+
 
 Below you can find the input/outout parameters for the module
 
@@ -21,8 +22,8 @@ Output
 - **msg** (Message from the module)
 - **changed** (True/False)
 
-> Note: The module will update the policy file with the new configuration.
 
+> Note: By using this module the policy file will be updated with the new configuration.
 
 ## Examples of using the module on a playbook
 
@@ -180,30 +181,4 @@ Output
           signatureId: 200001834          ### Changes added by ansible module
       template:
         name: POLICY_TEMPLATE_NGINX_BASE
-  ```
-
-
-
-
-  ```yml
-  - name: Attack signatures
-    hosts: localhost
-    tasks:
-      - name: Disable Signature on a URL entity
-        signatures:
-          signature_id: 13972332
-          enabled: False
-          policy_path: "policy.yaml"
-          entity_type: headers
-          entity: Referer
-          format: yaml
-        register: result
-
-      - name: Display Module Output
-        debug:
-          var: result.policy
-
-      - name: Display Module Output
-        debug:
-          var: result.msg
   ```

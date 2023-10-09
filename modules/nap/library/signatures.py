@@ -4,54 +4,6 @@ import yaml
 
 from ansible.module_utils.basic import AnsibleModule
 
-def is_json(myjson):
-  try:
-    json.loads(myjson)
-  except ValueError as e:
-    return False
-  return True
-
-def key_exists(mod_json, key, value):
-  x = 0
-  exists = False
-  for i in mod_json:
-    if key in i:
-      if i[key] == value:
-        exists = True
-        break;
-    x = x + 1
-  return (exists, x)
-
-def value_exists(mod_json, value):
-  x = 0
-  exists = False
-  for i in mod_json:
-    if i == value:
-      exists = True
-      break;
-    x = x + 1
-  return (exists, x)
-
-def check_value(mod_json, key, value):
-  try:
-    if mod_json[key] == value:
-      return True
-    else: 
-      return False
-  except (KeyError , TypeError):
-    return False
-
-def check_value_array(mod_json, key, value):
-  try:
-    if value.isnumeric():
-      value = int(value)
-    if value in mod_json[key]:
-      return True
-    else: 
-      return False
-  except (KeyError , TypeError):
-    return False
-
 def override_signature_global(policy_json, signatureId, enabled):
   if "signatures" in  policy_json["policy"] :
     signature_exists, x = key_exists(policy_json["policy"]["signatures"], "signatureId", signatureId)
@@ -89,6 +41,26 @@ def override_signature_on_entity(policy_json, signatureId, location, entity_name
 	
 	return policy_json, True, "Success! SignatureID: "+ str(signatureId)+" on entity " + entity_name+ " is configured"
 
+def key_exists(mod_json, key, value):
+  x = 0
+  exists = False
+  for i in mod_json:
+    if key in i:
+      if i[key] == value:
+        exists = True
+        break;
+    x = x + 1
+  return (exists, x)
+
+def check_value(mod_json, key, value):
+  try:
+    if mod_json[key] == value:
+      return True
+    else: 
+      return False
+  except (KeyError , TypeError):
+    return False
+
 def main():
     module = AnsibleModule(
         argument_spec=dict(
@@ -100,7 +72,7 @@ def main():
             enabled=dict(type='bool', required=False, default=False)
         )
     )
-
+    # Put ansible inputs as python variables 
     policy_path = module.params['policy_path']
     enabled = module.params['enabled']
     sig_id = module.params['signature_id']
@@ -111,39 +83,60 @@ def main():
     else:
       entity_type = module.params['entity_type']
 
-    allowed_values = ["urls", "cookies", "headers", "parameters"]
-
-    if entity_type not in allowed_values :
-      module.fail_json(msg=f"'{entity_type}' is  not a valid value for the 'entity_type' variable. It can be any of the following: {list(allowed_values)}.")
-  
+    # Read the policy file 
     try:
         with open(policy_path, 'r') as file:
-          policy = file.read()
+          my_policy = file.read()
     except Exception as e:
         module.fail_json(msg=f"Failed to read file: {str(e)}")
 
+    # if the fomrat is yaml then decode it as yaml else decode it as json
     if (format == "yaml"):
       try:
-        yData = yaml.safe_load(policy)
+        yData = yaml.safe_load(my_policy)
         jData = yData["spec"]
       except:
         module.fail_json(msg=f"Input file not YAML")
     else:
       try:
-        jData = json.loads(policy)
+        jData = json.loads(my_policy)
       except:
         module.fail_json(msg=f"Input file not JSON")
 
 
+    
     if entity_type is None or entity is None :
+      # if entity_type or entity is not configured then the signature override is going to be applied global
       jData, result, msg = override_signature_global(jData,sig_id,enabled)
     else :
+      # If it is applied on the entity level then check that the entity_type is correct.
+      allowed_values = ["urls", "cookies", "headers", "parameters"]
+      if entity_type not in allowed_values :
+        module.fail_json(msg=f"'{entity_type}' is  not a valid value for the 'entity_type' variable. It can be any of the following: {list(allowed_values)}.")
+          
       jData, result, msg = override_signature_on_entity(jData,sig_id,entity_type,entity,enabled)
 
-    if result :
-      module.exit_json(changed=True, msg=msg, policy=jData)
+
+
+    if result :   
+      # if there is a change in the policy, update the file with the new policy and exit the module with a "changed" option
+      if (format == "yaml"):
+        yData["spec"] = jData
+        with open('policy_mod', 'w', encoding='utf-8') as f:
+          yaml.dump(yData, f, indent=2)
+        module.exit_json(changed=True, msg=msg, policy=yData)
+      else:
+        with open('policy_mod', 'w', encoding='utf-8') as f:
+          json.dump(jData, f, ensure_ascii=False, indent=2)
+        module.exit_json(changed=True, msg=msg, policy=jData)
+      
     else :
-      module.exit_json(changed=False, msg=msg, policy=jData)
-    
+      # if nochange in the policy, update the file with the new policy and exit the module with a "changed" option
+      if (format == "yaml"):
+        module.exit_json(changed=False, msg=msg, policy=yData)
+      else:
+        module.exit_json(changed=False, msg=msg, policy=jData)
+
+
 if __name__ == '__main__':
     main()

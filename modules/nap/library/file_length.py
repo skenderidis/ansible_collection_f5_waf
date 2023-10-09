@@ -4,54 +4,7 @@ import yaml
 
 from ansible.module_utils.basic import AnsibleModule
 
-def is_json(myjson):
-  try:
-    json.loads(myjson)
-  except ValueError as e:
-    return False
-  return True
-
-def key_exists(mod_json, key, value):
-  x = 0
-  exists = False
-  for i in mod_json:
-    if key in i:
-      if i[key] == value:
-        exists = True
-        break;
-    x = x + 1
-  return (exists, x)
-
-def value_exists(mod_json, value):
-  x = 0
-  exists = False
-  for i in mod_json:
-    if i == value:
-      exists = True
-      break;
-    x = x + 1
-  return (exists, x)
-
-def check_value(mod_json, key, value):
-  try:
-    if mod_json[key] == value:
-      return True
-    else: 
-      return False
-  except (KeyError , TypeError):
-    return False
-
-def check_value_array(mod_json, key, value):
-  try:
-    if value.isnumeric():
-      value = int(value)
-    if value in mod_json[key]:
-      return True
-    else: 
-      return False
-  except (KeyError , TypeError):
-    return False
-
+#VIOL_URL_LENGTH
 def url_length(policy_json, name, length):
 	if "filetypes" in policy_json["policy"] :
 		filetype_exists, x = key_exists(policy_json["policy"]["filetypes"], "name", name)
@@ -68,7 +21,7 @@ def url_length(policy_json, name, length):
 		policy_json["policy"]["filetypes"] = json.loads('[{"name":"'+name+'","urlLength":'+str(length)+', "checkUrlLength":true}]')
 	
 	return policy_json, True, "Success! URL Length adjusted to " + str(length)
-
+#VIOL_POST_DATA_LENGTH
 def postdata_length(policy_json, name, length):
 	if "filetypes" in policy_json["policy"] :
 		filetype_exists, x = key_exists(policy_json["policy"]["filetypes"], "name", name)
@@ -85,7 +38,7 @@ def postdata_length(policy_json, name, length):
 		policy_json["policy"]["filetypes"] = json.loads('[{"name":"'+name+'","postDataLength":'+str(length)+', "checkPostDataLength":true}]')
 	
 	return policy_json, True, "Success! PostData Length adjusted to " + str(length)
-
+#VIOL_QUERY_STRING_LENGTH
 def querystring_length(policy_json, name, length):
 	if "filetypes" in policy_json["policy"] :
 		filetype_exists, x = key_exists(policy_json["policy"]["filetypes"], "name", name)
@@ -102,7 +55,7 @@ def querystring_length(policy_json, name, length):
 		policy_json["policy"]["filetypes"] = json.loads('[{"name":"'+name+'","queryStringLength":'+str(length)+', "checkQueryStringLength":true}]')
 	
 	return policy_json, True, "Success! QueryString Length adjusted to " + str(length)
-
+#VIOL_REQUEST_LENGTH
 def request_length(policy_json, name, length):
 	if "filetypes" in policy_json["policy"] :
 		filetype_exists, x = key_exists(policy_json["policy"]["filetypes"], "name", name)
@@ -120,32 +73,50 @@ def request_length(policy_json, name, length):
 	
 	return policy_json, True, "Success! RequestLength Length adjusted to " + str(length)
 
+def key_exists(mod_json, key, value):
+  x = 0
+  exists = False
+  for i in mod_json:
+    if key in i:
+      if i[key] == value:
+        exists = True
+        break;
+    x = x + 1
+  return (exists, x)
+
+def check_value(mod_json, key, value):
+  try:
+    if mod_json[key] == value:
+      return True
+    else: 
+      return False
+  except (KeyError , TypeError):
+    return False
+
 def main():
     module = AnsibleModule(
         argument_spec=dict(
             policy_path=dict(type='str', required=True),
             filetype=dict(type='str', required=True),
             format=dict(type='str', required=True),
-            length_type=dict(type='str', required=True),
+            type=dict(type='str', required=True),
             length=dict(type='int', required=True)
         )
     )
 
     policy_path = module.params['policy_path']
-    enabled = module.params['enabled']
     filetype = module.params['filetype']
     format = module.params['format'].lower()
-    if module.params['length_type'] is not None:
-      length_type = module.params['length_type'].lower()
-    else:
-      length_type = module.params['length_type']
     length = module.params['length']
+    if module.params['type'] is not None:
+      type = module.params['type'].lower()
+    else:
+      type = module.params['type']
 
+      
     allowed_values = ["url", "request", "post_data", "qs_data"]
-
-
-    if length_type != None and length_type not in allowed_values :
-      module.fail_json(msg=f"'{length_type}' is  not a valid value for the 'length_type' variable. It can be any of the following: {list(allowed_values)}.")
+    if type != None and type not in allowed_values :
+      module.fail_json(msg=f"'{type}' is  not a valid value for the 'type' variable. It can be any of the following: {list(allowed_values)}.")
     
     try:
         with open(policy_path, 'r') as file:
@@ -168,19 +139,32 @@ def main():
 
 
    
-    if length_type=="url":
+    if type=="url":
       jData, result, msg = url_length(jData,filetype,length)
-    if length_type=="request":
+    if type=="request":
       jData, result, msg = request_length(jData,filetype,length)
-    if length_type=="post_data":
+    if type=="post_data":
       jData, result, msg = postdata_length(jData,filetype,length)
-    if length_type=="qs_data":
+    if type=="qs_data":
       jData, result, msg = querystring_length(jData,sig_id,length)
 
-    if result :
-      module.exit_json(changed=True, msg=msg, policy=jData)
+    if result :   
+      # if there is a change in the policy, update the file with the new policy and exit the module with a "changed" option
+      if (format == "yaml"):
+        yData["spec"] = jData
+        with open('policy_mod', 'w', encoding='utf-8') as f: 
+          yaml.dump(yData, f, indent=2) #Save the json format of the policy
+        module.exit_json(changed=True, msg=msg, policy=yData) #Exit and provide the yaml format of the policy
+      else:
+        with open('policy_mod', 'w', encoding='utf-8') as f:
+          json.dump(jData, f, ensure_ascii=False, indent=2) #Save the json format of the policy
+        module.exit_json(changed=True, msg=msg, policy=jData)  #Exit and provide the json format of the policy
     else :
-      module.exit_json(changed=False, msg=msg, policy=jData)
+      if (format == "yaml"):  # if no change exit the module with a "No change" option
+        module.exit_json(changed=False, msg=msg, policy=yData)  #Exit and provide the yaml format of the policy
+      else:
+        module.exit_json(changed=False, msg=msg, policy=jData)  #Exit and provide the json format of the policy
+
     
 
 if __name__ == '__main__':

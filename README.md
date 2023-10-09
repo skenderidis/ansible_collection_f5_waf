@@ -11,8 +11,9 @@ Violations
 | VIOL_QUERY_STRING_LENGTH | file_length  |  100%  | [Examples](file_length.md) |
 | VIOL_REQUEST_LENGTH | file_length  |  100%  | [Examples](file_length.md) |
 | VIOL_URL_LENGTH | file_length  |  100%  | [Examples](file_length.md) |
-| VIOL_HTTP_PROTOCOL | http_compliance  |  100%  | [Examples](/http_compliance/) |
-| VIOL_EVASION | evasion  |  100%  | [Examples](/evasion/) |
+| VIOL_HTTP_PROTOCOL | http_protocol  |  100%  | [Examples](http_protocol.md) |
+| VIOL_EVASION | evasion  |  100%  | [Examples](evasion.md) |
+
 | VIOL_URL  |  url  |  100%  | [Examples](#)  |
 | VIOL_METHOD  |  method  |  100%  | [Examples](#)  |
 | VIOL_HEADER_LENGTH  |    |  100%  | [Examples](#)  |
