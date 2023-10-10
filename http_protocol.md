@@ -1,4 +1,4 @@
-# HTTP_Protocol
+# HTTP_Protocol module
 
 The **`http_protocol`** module has been created to assist with the false-positive of the `VIOL_HTTP_PROTOCOL` violations. It can allow/disallow of the subviolations defined under the `VIOL_HTTP_PROTOCOL` violation. The list of the subviolations are:
 

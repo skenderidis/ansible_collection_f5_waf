@@ -1,12 +1,13 @@
-# Method module
+# Cookie_modified module
 
-The **`method`** module has been created to assist with the false-positive of the `VIOL_METHOD` violations. It can add methods onto the allowed list of the App Protect Policy. 
+The **`cookie_modified`** module has been created to assist with the false-positive of the `VIOL_COOKIE_MODIFIED`violations. It can configure the enforcementType of a cookie to either `allow` or `enforced` based on the cookie settings of a NAP policy.
 
 Below you can find the input/outout parameters for the module
 
 Input:
 - **policy_path** (location of policy file)
-- **method** (Method you want to allow)
+- **enforcementType** (The enforcementType of the cookie. This can be either `allow`, `enforce`)
+- **cookie_name** (name of the cookie that you want to modify the enforcementType)
 - **format** (*json* or *yaml*)
 
 Output
@@ -15,9 +16,8 @@ Output
 - **changed** (True/False)
 
 ## Examples of using the module on a playbook
-
-### Allow a disallowed file type (php)
   Input policy `app1_waf.yaml`
+  
   ```yaml
   apiVersion: appprotect.f5.com/v1beta1
   kind: APPolicy
@@ -32,16 +32,16 @@ Output
         name: POLICY_TEMPLATE_NGINX_BASE
   ```
 
-
-  Playbook to allow the url **index.php**.
+  Playbook to modify the enforcementType for a specific cookie `Temp-Access`
   ```yaml
   - name: File Types
     hosts: localhost
     tasks:
-      - name: Allow a specific url
-        method:
-          method: DELETE
-          policy_path: app1_waf.yaml
+      - name: Allow a specific filetype
+        cookie_modified:
+          policy_path: policy.yaml
+          cookie: Temp-Access
+          enforcementType: enforce
           format: yaml
         register: result
   ```
@@ -55,10 +55,13 @@ Output
   spec:
     policy:
       applicationLanguage: utf-8
+      cookies:                      ### Changes added by ansible module
+      - enforcementType: allow      ### Changes added by ansible module
+        name: Temp-Access           ### Changes added by ansible module
       enforcementMode: blocking
-      methods:                  ### Changes added by ansible module
-      - name: DELETE            ### Changes added by ansible module
       name: app1_waf
       template:
         name: POLICY_TEMPLATE_NGINX_BASE
   ```
+
+

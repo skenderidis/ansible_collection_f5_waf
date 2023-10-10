@@ -1,12 +1,12 @@
-# Method module
+# Status_code module
 
-The **`method`** module has been created to assist with the false-positive of the `VIOL_METHOD` violations. It can add methods onto the allowed list of the App Protect Policy. 
+The **`status_code`** module has been created to assist with the false-positive of the `VIOL_HTTP_RESPONSE_STATUS` violations. It can assist by adding the HTTP response code on the allowed list.
 
 Below you can find the input/outout parameters for the module
 
 Input:
 - **policy_path** (location of policy file)
-- **method** (Method you want to allow)
+- **value** (the length that you would like to configure for the HTTP headers)
 - **format** (*json* or *yaml*)
 
 Output
@@ -15,9 +15,8 @@ Output
 - **changed** (True/False)
 
 ## Examples of using the module on a playbook
-
-### Allow a disallowed file type (php)
   Input policy `app1_waf.yaml`
+  
   ```yaml
   apiVersion: appprotect.f5.com/v1beta1
   kind: APPolicy
@@ -32,15 +31,14 @@ Output
         name: POLICY_TEMPLATE_NGINX_BASE
   ```
 
-
-  Playbook to allow the url **index.php**.
+  Playbook to include the HTTP Status code to the allowed list.
   ```yaml
   - name: File Types
     hosts: localhost
     tasks:
-      - name: Allow a specific url
-        method:
-          method: DELETE
+      - name: Modify the allowed length of the HTTP Headers
+        status_code:
+          code: 409
           policy_path: app1_waf.yaml
           format: yaml
         register: result
@@ -56,8 +54,15 @@ Output
     policy:
       applicationLanguage: utf-8
       enforcementMode: blocking
-      methods:                  ### Changes added by ansible module
-      - name: DELETE            ### Changes added by ansible module
+      general:
+        allowedResponseCodes:   ### Changes added by ansible module
+        - 400                   ### Changes added by ansible module
+        - 401                   ### Changes added by ansible module
+        - 404                   ### Changes added by ansible module
+        - 407                   ### Changes added by ansible module
+        - 417                   ### Changes added by ansible module
+        - 503                   ### Changes added by ansible module
+        - 409                   ### Changes added by ansible module
       name: app1_waf
       template:
         name: POLICY_TEMPLATE_NGINX_BASE

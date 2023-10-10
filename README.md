@@ -15,11 +15,11 @@ Violations
 | VIOL_EVASION | evasion  |  100%  | [Examples](evasion.md) |
 | VIOL_URL  |  url  |  100%  | [Examples](url.md) |
 | VIOL_METHOD  |  method  |  100%  | [Examples](method.md) |
-| VIOL_HEADER_LENGTH  |    |  100%  | [Examples](header_length.md) |
-| VIOL_COOKIE_LENGTH  |    |  100%  | [Examples](cookie_length.md) |
-| VIOL_COOKIE_MODIFIED  |    | 100%  | [Pending]() |
-| VIOL_HTTP_RESPONSE_STATUS  |    | 100%  | [Pending]() |
-| VIOL_THREAT_CAMPAIGN  |    |  100%  | [Pending]() |
+| VIOL_HEADER_LENGTH  |  header_length  |  100%  | [Examples](header_length.md) |
+| VIOL_COOKIE_LENGTH  |  cookie_length  |  100%  | [Examples](cookie_length.md) |
+| VIOL_COOKIE_MODIFIED  |  cookie_modified  | 100%  | [Examples](cookie_modified.md) |
+| VIOL_HTTP_RESPONSE_STATUS  |  status_code  | 100%  | [Examples](status_code.md) |
+| VIOL_THREAT_CAMPAIGN  |  threat_campaign  |  100%  | [Examples](threat_campaign.md) |
 | VIOL_PARAMETER  |    |  100%  | [Pending]() |
 | VIOL_MANDATORY_HEADER  |    | 100%  | [Pending]() |
 | VIOL_MANDATORY_PARAMETER  |    | 100%  | [Pending]() |

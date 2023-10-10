@@ -1,4 +1,4 @@
-# HTTP_protocol
+# Evasion module
 
 The **`evasion`** module has been created to assist with the false-positive of the `VIOL_EVASION` violations. It can allow/disallow of the subviolations defined under the `VIOL_EVASION` violation. The list of the subviolations are:
 
