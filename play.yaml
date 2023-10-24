@@ -4,22 +4,17 @@
   tasks:
     - name: Clean-up. Deleting the Git folder and its contents
       file:
-        path: /git
+        path: git
         state: absent
 
     - name: Creating a new Git folder
       file:
-        path: /git
+        path: git
         state: directory
 
     - name: Clone Git repository with NAP Policies 
       git:
         repo: https://gitlab.f5k8s.net/root/test  # Replace with the URL of the Git repo
-        dest: /git  # Specify the local directory where you want to clone the repo
+        dest: git  # Specify the local directory where you want to clone the repo
         version: main  # Specify the branch, tag, or commit you want to fetch
 
-    - name: Check if the file exists
-      stat:
-        path: /path/to/destination_directory/path/to/file.txt
-      register: file_stat_result
-      when: git_clone_result.changed  # Only check if the repository was cloned
