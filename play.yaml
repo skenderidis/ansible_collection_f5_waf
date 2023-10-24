@@ -14,7 +14,7 @@
 
     - name: Clone Git repository with NAP Policies 
       git:
-        repo: https://gitlab.f5k8s.net/root/test  # Replace with the URL of the Git repo
+        repo: {{repo}}  # Replace with the URL of the Git repo
         dest: git  # Specify the local directory where you want to clone the repo
         version: main  # Specify the branch, tag, or commit you want to fetch
 
