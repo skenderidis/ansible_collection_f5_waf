@@ -1,4 +1,5 @@
 hosts: localhost
+repo: "https://gitlab.f5k8s.net/root/test"
 gitlab_repo_name: "f5-hello-world.git"
 gitlab_repo: "https://gitlab.com/nixnub/f5-hello-world.git"
 gitlab_url: "git@gitlab.com:nixnub/f5-hello-world.git"
