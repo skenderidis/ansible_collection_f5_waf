@@ -1,8 +1,8 @@
 ---
 - name: Download a WAF Policy from the Git repo
   hosts: localhost
-  collections:
-    - skenderidis.app_protect      
+#  collections:
+#    - skenderidis.app_protect      
   tasks:
     - name: Clean-up. Deleting the Git folder and its contents
       file:
@@ -20,10 +20,10 @@
         dest: git  # Specify the local directory where you want to clone the repo
         version: main  # Specify the branch, tag, or commit you want to fetch
 
-    - name: Disable signature globaly
-      signatures:
-        signature_id: 200001837
-        enabled: False
-        policy_path: app1_waf.yaml
-        format: yaml
-      register: result
+#    - name: Disable signature globaly
+#      signatures:
+#        signature_id: 200001837
+#        enabled: False
+#        policy_path: app1_waf.yaml
+#        format: yaml
+#      register: result
