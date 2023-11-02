@@ -40,7 +40,7 @@ Output
       - name: Allow a specific filetype
         cookie_modified:
           policy_path: policy.yaml
-          cookie: Temp-Access
+          cookie_name: Temp-Access
           enforcementType: enforce
           format: yaml
         register: result
