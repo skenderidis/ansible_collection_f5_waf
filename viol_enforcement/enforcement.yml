@@ -1,0 +1,20 @@
+---
+- name: Test My Custom Module Locally
+  hosts: localhost
+  collections:
+    - skenderidis.f5_awaf   
+  tasks:
+    - name: Disable Blocking Settings
+      enforcement_mode:
+        policy_path: policy.yaml
+        enforcement: transparent
+        format: yaml
+      register: result
+
+    - name: Display Module Output
+      debug:
+        var: result.policy
+
+    - name: Display Module Output
+      debug:
+        var: result.msg        

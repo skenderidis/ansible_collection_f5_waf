@@ -1,0 +1,21 @@
+---
+- name: VIOL_MANDATORY_PARAMETER
+  hosts: localhost
+  collections:
+    - skenderidis.f5_awaf   
+  tasks:
+    - name: Modify Parameter's mandatory setting
+      viol_mandatory_parameter:
+        policy_path: policy.yaml
+        parameter_name: test
+        enabled: false
+        format: yaml
+      register: result
+
+    - name: Display Module Output
+      debug:
+        var: result.policy
+
+    - name: Display Module Output
+      debug:
+        var: result.msg        

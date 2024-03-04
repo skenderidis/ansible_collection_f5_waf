@@ -1,0 +1,21 @@
+---
+- name: VIOL_COOKIE_MODIFIED
+  hosts: localhost
+  collections:
+    - skenderidis.f5_awaf   
+  tasks:
+    - name: Modify the allowed enforcementType of the cookies
+      viol_cookie_modified:
+        policy_path: app1_waf.yaml
+        cookie_name: user
+        enforcementType: enforce
+        format: yaml
+      register: result
+
+    - name: Display Module Output
+      debug:
+        var: result.policy
+
+    - name: Display Module Output
+      debug:
+        var: result.msg        

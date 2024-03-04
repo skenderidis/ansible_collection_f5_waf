@@ -1,0 +1,21 @@
+---
+- name: Test My Custom Module Locally
+  hosts: localhost
+  collections:
+    - skenderidis.f5_awaf   
+  tasks:
+    - name: Modify Parameter's repeated setting
+      viol_parameter_empty_value:
+        policy_path: waf_policy.yaml
+        parameter_name: test
+        enabled: false
+        format: yaml
+      register: result
+
+    - name: Display Module Output
+      debug:
+        var: result.policy
+
+    - name: Display Module Output
+      debug:
+        var: result.msg        

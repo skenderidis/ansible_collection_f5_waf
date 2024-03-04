@@ -1,0 +1,21 @@
+---
+- name: VIOL_EVASION
+  hosts: localhost
+  collections:
+    - skenderidis.f5_awaf   
+  tasks:
+    - name: Modify Evasion techniques
+      viol_evasion:
+        policy_path: app1_waf.yaml
+        evasion: IIS Unicode codepoints
+        enabled: True
+        format: yaml
+      register: result
+
+    - name: Display Module Output
+      debug:
+        var: result.policy
+
+    - name: Display Module Output
+      debug:
+        var: result.msg        

@@ -1,0 +1,21 @@
+---
+- name: Test My Custom Module Locally
+  hosts: localhost
+  collections:
+    - skenderidis.f5_awaf   
+  tasks:
+    - name: Modify Evasion techniques
+      viol_http_protocol:
+        policy_path: app1_waf.yaml
+        http_protocol: Body in GET or HEAD requests
+        enabled: False
+        format: yaml        
+      register: result
+
+    - name: Display Module Output
+      debug:
+        var: result.policy
+
+    - name: Display Module Output
+      debug:
+        var: result.msg        

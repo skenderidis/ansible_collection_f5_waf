@@ -1,0 +1,21 @@
+---
+- name: VIOL_PARAMETER
+  hosts: localhost
+  collections:
+    - skenderidis.f5_awaf   
+  tasks:
+    - name: Allow/Disallow Parameter
+      viol_parameter:
+        policy_path: policy.yaml
+        parameter_name: test
+        enabled: true
+        format: yaml
+      register: result
+
+    - name: Display Module Output
+      debug:
+        var: result.policy
+
+    - name: Display Module Output
+      debug:
+        var: result.msg        

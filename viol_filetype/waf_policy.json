@@ -1,0 +1,10 @@
+{
+    "policy": {
+      "applicationLanguage": "utf-8",
+      "enforcementMode": "blocking",
+      "name": "app1_waf",
+      "template": {
+        "name": "POLICY_TEMPLATE_NGINX_BASE"
+      }
+    }
+  }

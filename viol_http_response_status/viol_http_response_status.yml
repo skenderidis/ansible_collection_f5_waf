@@ -1,0 +1,20 @@
+---
+- name: Test My Custom Module Locally
+  hosts: localhost
+  collections:
+    - skenderidis.f5_awaf   
+  tasks:
+    - name: Modify HTTP Response Code
+      viol_http_response_status:
+        policy_path: app1_waf.yaml
+        code: 409
+        format: yaml
+      register: result
+
+    - name: Display Module Output
+      debug:
+        var: result.policy
+
+    - name: Display Module Output
+      debug:
+        var: result.msg        

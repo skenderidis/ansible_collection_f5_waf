@@ -1,0 +1,21 @@
+---
+- name: VIOL_MANDATORY_HEADER
+  hosts: localhost
+  collections:
+    - skenderidis.f5_awaf   
+  tasks:
+    - name: Modify Header's mandatory setting
+      viol_mandatory_header:
+        policy_path: policy.yaml
+        header_name: test
+        enabled: false
+        format: yaml
+      register: result
+
+    - name: Display Module Output
+      debug:
+        var: result.policy
+
+    - name: Display Module Output
+      debug:
+        var: result.msg        

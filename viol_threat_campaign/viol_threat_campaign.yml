@@ -1,0 +1,21 @@
+---
+- name: VIOL_THREAT_CAMPAIGN
+  hosts: localhost
+  collections:
+    - skenderidis.f5_awaf   
+  tasks:
+    - name: Disable threat_campaign
+      viol_threat_campaign:
+        policy_path: waf_policy.yaml
+        name: "PHPUnit Eval_stdin Remote Code Execution"
+        enabled: False
+        format: yaml
+      register: result
+
+    - name: Display Module Output
+      debug:
+        var: result.policy
+
+    - name: Display Module Output
+      debug:
+        var: result.msg        

@@ -1,0 +1,21 @@
+---
+- name: Test My Custom Module Locally
+  hosts: localhost
+  collections:
+    - skenderidis.f5_awaf   
+  tasks:
+    - name: Disable threat_campaign
+      viol_attack_signature_global:
+        policy_path: policy.json
+        signature_id: 204855
+        enabled: false
+        format: json
+      register: result
+
+    - name: Display Module Output
+      debug:
+        var: result.policy
+
+    - name: Display Module Output
+      debug:
+        var: result.msg        
