@@ -1,6 +1,7 @@
 # VIOL_URL_LENGTH module
 
-The **`viol_url_length`** module has been created to assist with the false-positive of the `VIOL_URL_LENGTH` violations. It can modify the configured length on the file type extensions of a NAP/AWAF policy.
+The **`viol_url_length`** module has been created to assist with the false-positive of the `VIOL_URL_LENGTH` violations. It can modify the configured length on the file type extensions of an NGINX App Protect or an F5 AWAF declarative waf policy.
+
 ```json
 {
   "policy": {
