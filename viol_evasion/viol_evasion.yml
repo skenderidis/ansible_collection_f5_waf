@@ -1,4 +1,3 @@
----
 - name: VIOL_EVASION
   hosts: localhost
   collections:
@@ -6,7 +5,7 @@
   tasks:
     - name: Modify Evasion techniques
       viol_evasion:
-        policy_path: app1_waf.yaml
+        policy_path: waf_policy.yaml
         evasion: IIS Unicode codepoints
         enabled: True
         format: yaml

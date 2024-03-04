@@ -1,15 +1,12 @@
----
-- name: Test My Custom Module Locally
+- name: Change enforcement mode
   hosts: localhost
   collections:
     - skenderidis.f5_awaf   
   tasks:
-    - name: Disable Blocking Settings
-      blocking_settings:
+    - name: Change enforcement mode
+      enforcement_mode:
         policy_path: policy.yaml
-        violation: VIOL_ATTACK_SIGNATURE
-        alarm: true
-        block: true
+        enforcement: transparent
         format: yaml
       register: result
 

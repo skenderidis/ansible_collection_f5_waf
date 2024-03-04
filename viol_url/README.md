@@ -28,6 +28,7 @@ Output
 - **msg** (Message from the module)
 - **changed** (True/False)
 
+> Note: By using this module the policy file will be updated with the new configuration.
 
 ## Example of using the ansible module with a YAML waf policy
 
@@ -48,16 +49,17 @@ Output
 
 2. Run the Ansible playbook to allow a specific **url**
     ```yaml
-    - name: File Types
+    - name: VIOL_URL
       hosts: localhost
+      collections:
+        - skenderidis.f5_awaf         
       tasks:
-        - name: Allow a specific url
+        - name: Allow/Disallow a specific url
           url:
             url: index.php
             enabled: True
             policy_path: waf_policy.yaml
             format: yaml
-          register: result
     ```
 
 3. Updated waf policy
@@ -98,14 +100,16 @@ Output
 
 2. Run the Ansible playbook to modify the **URL length** for a specific filetype
     ```yaml
-    - name: File Types
+    - name: VIOL_URL
       hosts: localhost
+      collections:
+        - skenderidis.f5_awaf         
       tasks:
-        - name: Allow a specific filetype
-          viol_url_length:
+        - name: Allow/Disallow a specific url
+          url:
+            url: index.php
+            enabled: True
             policy_path: waf_policy.json
-            filetype: php
-            length: 2048
             format: json
     ```
 

@@ -1,10 +1,9 @@
----
-- name: Test My Custom Module Locally
+- name: VIOL_URL
   hosts: localhost
   collections:
     - skenderidis.f5_awaf   
   tasks:
-    - name: Disable threat_campaign
+    - name: Allow/Disallow a specific url
       viol_url:
         policy_path: waf_policy.yaml
         url: "index.php"

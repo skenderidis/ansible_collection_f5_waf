@@ -1,14 +1,13 @@
----
 - name: VIOL_POST_DATA_LENGTH
   hosts: localhost
   collections:
     - skenderidis.f5_awaf   
   tasks:
-    - name: Disable threat_campaign
+    - name: Modify Post Data Length
       viol_post_data_length:
         policy_path: policy.yaml
         filetype: test
-        length: 1024
+        length: 2048
         format: yaml
       register: result
 

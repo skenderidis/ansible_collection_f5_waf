@@ -1,4 +1,3 @@
----
 - name: VIOL_MANDATORY_PARAMETER
   hosts: localhost
   collections:
@@ -6,8 +5,8 @@
   tasks:
     - name: Modify Parameter's mandatory setting
       viol_mandatory_parameter:
-        policy_path: policy.yaml
-        parameter_name: test
+        policy_path: waf_policy.yaml
+        parameter_name: user
         enabled: false
         format: yaml
       register: result

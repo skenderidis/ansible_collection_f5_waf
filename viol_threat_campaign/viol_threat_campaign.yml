@@ -1,10 +1,9 @@
----
 - name: VIOL_THREAT_CAMPAIGN
   hosts: localhost
   collections:
     - skenderidis.f5_awaf   
   tasks:
-    - name: Disable threat_campaign
+    - name: Disable/Enable threat campaigns
       viol_threat_campaign:
         policy_path: waf_policy.yaml
         name: "PHPUnit Eval_stdin Remote Code Execution"

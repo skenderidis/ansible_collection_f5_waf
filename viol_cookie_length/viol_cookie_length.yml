@@ -1,12 +1,11 @@
----
 - name: VIOL_COOKIE_LENGTH
   hosts: localhost
   collections:
     - skenderidis.f5_awaf   
   tasks:
-    - name: Modify the allowed length of the cookies
+    - name: Modify the allowed length of cookies
       cookie_length:
-        policy_path: app1_waf.yaml
+        policy_path: waf_policy.yaml
         value: 4096
         format: yaml
       register: result      

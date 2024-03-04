@@ -1,12 +1,11 @@
----
 - name: VIOL_COOKIE_MODIFIED
   hosts: localhost
   collections:
     - skenderidis.f5_awaf   
   tasks:
-    - name: Modify the allowed enforcementType of the cookies
+    - name: Modify the enforcementType of cookies
       viol_cookie_modified:
-        policy_path: app1_waf.yaml
+        policy_path: waf_policy.yaml
         cookie_name: user
         enforcementType: enforce
         format: yaml

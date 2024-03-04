@@ -1,6 +1,6 @@
 # VIOL_PARAMETER_DATA_TYPE module
 
-The **`viol_parameter_data_type`** module has been created to assist with the false-positive of the `VIOL_PARAMETER_DATA_TYPE` violations. It can modify the data-type configured for each parameter. The list of the `Data types` are:
+The **`viol_parameter_data_type`** module has been created to assist with the false-positive of the `VIOL_PARAMETER_DATA_TYPE` violations. It can modify the data-type configured for each parameter on the NGINX App Protect or F5 AWAF declarative waf policy. The allowed values for `data_type` are:
 
 1. alpha-numeric
 1. binary
@@ -9,6 +9,19 @@ The **`viol_parameter_data_type`** module has been created to assist with the fa
 1. boolean
 1. integer
 1. decimal
+
+```json
+{
+  "policy": {
+    "parameters": [
+      {
+        "name": "user",
+        "datatype": "integer"
+      }
+    ]
+  }
+}
+```
 
 Below you can find the input/outout parameters for the module
 
@@ -23,54 +36,104 @@ Output
 - **msg** (Message from the module)
 - **changed** (True/False)
 
-## Examples of using the module on a playbook
+> Note: By using this module the policy file will be updated with the new configuration.
 
-  Input policy `waf_policy.yaml`
-  ```yaml
-  apiVersion: appprotect.f5.com/v1beta1
-  kind: APPolicy
-  metadata:
-    name: waf_policy
-  spec:
-    policy:
-      applicationLanguage: utf-8
-      enforcementMode: blocking
+## Example of using the ansible module with a YAML waf policy
+1. Input policy `waf_policy.yaml` 
+    ```yaml
+    apiVersion: appprotect.f5.com/v1beta1
+    kind: APPolicy
+    metadata:
       name: waf_policy
-      template:
-        name: POLICY_TEMPLATE_NGINX_BASE
-  ```
+    spec:
+      policy:
+        applicationLanguage: utf-8
+        enforcementMode: blocking
+        name: waf_policy
+        template:
+          name: POLICY_TEMPLATE_NGINX_BASE
+    ```
 
 
-  Playbook to allow the subviolation **IIS Unicode codepoints**.
-  ```yaml
-  - name: File Types
-    hosts: localhost
-    collections:
-      - skenderidis.f5_awaf   
-    tasks:
-      - name: Disable threat_campaign
-        viol_parameter_data_type:
-          policy_path: policy.yaml
-          parameter_name: test
-          data_type: integer
-          format: yaml
-  ```
+2. Run the Ansible playbook to change the **data_type** settings for a specific parameter
+    ```yaml
+    - name: VIOL_PARAMETER_DATA_TYPE
+      hosts: localhost
+      collections:
+        - skenderidis.f5_awaf   
+      tasks:
+        - name: Modify Parameter's data type setting
+          viol_parameter_data_type:
+            policy_path: waf_policy.yaml
+            parameter_name: user
+            data_type: integer
+            format: yaml
+    ```
 
-  Updated policy.
-  ```yaml
-  apiVersion: appprotect.f5.com/v1beta1
-  kind: APPolicy
-  metadata:
-    name: waf_policy
-  spec:
-    policy:
-      applicationLanguage: utf-8
-      blocking-settings:                          ### Changes added by ansible module
-        evasions:                                 ### Changes added by ansible module
-        - description: IIS Unicode codepoints     ### Changes added by ansible module
-          enabled: true                           ### Changes added by ansible module
-      enforcementMode: blocking
-      name: app1_waf
-      template:
-        name: POLICY_TEMPLATE_NGINX_BASE
-  ```
+3. Updated waf policy
+    ```yaml
+    apiVersion: appprotect.f5.com/v1beta1
+    kind: APPolicy
+    metadata:
+      name: waf_policy
+    spec:
+      policy:
+        applicationLanguage: utf-8
+        enforcementMode: transparent
+        name: waf_policy
+        parameters:
+        - datatype: integer
+          name: user
+        template:
+          name: POLICY_TEMPLATE_NGINX_BASE
+    ```
+
+## Example of using the ansible module with a JSON waf policy
+1. Input policy `waf_policy.json`
+    ```json
+    {
+      "policy": {
+        "applicationLanguage": "utf-8",
+        "enforcementMode": "blocking",
+        "name": "waf_policy",
+        "template": {
+          "name": "POLICY_TEMPLATE_NGINX_BASE"
+        }
+      }
+    }
+    ```
+
+2. Run the Ansible playbook to disable the **repeated** settings for a specific parameter
+    ```yaml
+    - name: VIOL_PARAMETER_DATA_TYPE
+      hosts: localhost
+      collections:
+        - skenderidis.f5_awaf   
+      tasks:
+        - name: Modify Parameter's data type setting
+          viol_parameter_data_type:
+            policy_path: waf_policy.json
+            parameter_name: user
+            data_type: integer
+            format: json
+    ```
+
+3. Updated waf policy
+    ```json
+    {
+      "policy": {
+        "name": "waf_policy",
+        "template": {
+          "name": "POLICY_TEMPLATE_NGINX_BASE"
+        },
+        "applicationLanguage": "utf-8",
+        "enforcementMode": "blocking",
+        "parameters": [
+          {
+            "name": "user",
+            "datatype": "integer"
+          }
+        ]
+      }
+    }
+    ```

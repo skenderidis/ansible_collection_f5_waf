@@ -1,12 +1,11 @@
----
-- name: Test My Custom Module Locally
+- name: VIOL_FILETYPE
   hosts: localhost
   collections:
     - skenderidis.f5_awaf   
   tasks:
-    - name: Modify Evasion techniques
+    - name: Allow/Disallow a specific filetype
       viol_filetype:
-        policy_path: policy.yaml
+        policy_path: waf_policy.yaml
         filetype: exe
         enabled: false
         format: yaml

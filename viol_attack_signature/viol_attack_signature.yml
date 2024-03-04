@@ -1,15 +1,15 @@
----
-- name: Test My Custom Module Locally
+- name: Disable signature on an entity
   hosts: localhost
   collections:
     - skenderidis.f5_awaf   
   tasks:
-    - name: Disable threat_campaign
+    - name: Disable signature on an entity
       viol_attack_signature:
-        policy_path: policy.yaml
-        signature_id: 204855
+        policy_path: waf_policy.yaml
+        signature_id: 200001834
         enabled: true
         entity_type: urls
+        entity: index.php 
         format: yaml
       register: result
 

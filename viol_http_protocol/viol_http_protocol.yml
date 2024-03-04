@@ -1,12 +1,11 @@
----
-- name: Test My Custom Module Locally
+- name: VIOL_HTTP_PROTOCOL
   hosts: localhost
   collections:
     - skenderidis.f5_awaf   
   tasks:
-    - name: Modify Evasion techniques
+    - name: Modify HTTP Protocol Violations
       viol_http_protocol:
-        policy_path: app1_waf.yaml
+        policy_path: waf_policy.yaml
         http_protocol: Body in GET or HEAD requests
         enabled: False
         format: yaml        

@@ -1,10 +1,28 @@
 # VIOL_ATTACK_SIGNATURE module
 
-Two Ansible modules modules has been created to assist with the false-positive of the `VIOL_ATTACK_SIGNATURE` violations; **viol_attack_signature_global** and **viol_attack_signature**. **viol_attack_signature_global** can disable/enable signatures globally and **viol_attack_signature** can disable/enable signatures on a specific entity. The supported entities are the following: 
+The **viol_attack_signature** module has been created to assist with the false-positive of the `VIOL_ATTACK_SIGNATURE` violations. It can can disable/enable signatures on a specific entity on the NGINX App Protect or F5 AWAF declarative waf policy. The supported entities are the following: 
 1. `urls`
 2. `headers`
 3. `parameters`
 4. `cookies`
+
+```json
+{
+  "policy": {
+    "urls": [
+      {
+        "name": "index.php",
+        "signatureOverrides": [
+          {
+            "signatureId": 204855,
+            "enabled": true
+          }
+        ]
+      }
+    ]
+  }
+}
+```
 
 
 Below you can find the input/outout parameters for the module
@@ -14,171 +32,123 @@ Input:
 - **signature_id** (signature ID that you want to disable/enable)
 - **format** (*json* or *yaml*)
 - **enabled** (*True* or *False*. Defaults to False)
-- **entity_type** (**Optional** - Signature can be disabled on `urls`, `headers`, `parameters`, `cookies`) 
-- **entity** (**Optional** - The name of the entity you want to configure the signature override) 
+- **entity_type** (Signature can be disabled on `urls`, `headers`, `parameters`, `cookies`) 
+- **entity** (**Optional** - The name of the entity you want to configure the signature override. If not provided, it will be configured on the wildcard entity) 
 
 Output
 - **policy** (Policy output)
 - **msg** (Message from the module)
 - **changed** (True/False)
 
-
 > Note: By using this module the policy file will be updated with the new configuration.
 
-## Examples of using the module on a playbook
+## Example of using the ansible module with a YAML waf policy
+1. Input policy `waf_policy.yaml` 
+    ```yaml
+    apiVersion: appprotect.f5.com/v1beta1
+    kind: APPolicy
+    metadata:
+      name: waf_policy
+    spec:
+      policy:
+        applicationLanguage: utf-8
+        enforcementMode: blocking
+        name: waf_policy
+        template:
+          name: POLICY_TEMPLATE_NGINX_BASE
+    ```          
 
-### Disable a signature globally
-  Input policy `app1_waf.yaml`
-  
-  ```yaml
-  apiVersion: appprotect.f5.com/v1beta1
-  kind: APPolicy
-  metadata:
-    name: app1_waf
-  spec:
-    policy:
-      applicationLanguage: utf-8
-      enforcementMode: blocking
-      name: app1_waf
-      template:
-        name: POLICY_TEMPLATE_NGINX_BASE
-  ```
+2. Run the Ansible playbook to disable signature on a specific **url**
+    ```yaml
+    - name: Disable signature on an entity
+      hosts: localhost
+      collections:
+        - skenderidis.f5_awaf   
+      tasks:
+        - name: Disable signature on an entity
+          viol_attack_signature:
+            policy_path: waf_policy.yaml
+            signature_id: 200001834
+            enabled: true
+            entity_type: urls
+            entity: index.php 
+            format: yaml
+    ```
 
-  Playbook to disable signature globally.
-  ```yaml
-  - name: Attack signatures
-    hosts: localhost
-    tasks:
-      - name: Disable signature globaly
-        signatures:
-          signature_id: 200001834
-          enabled: False
-          policy_path: "app1_waf.yaml"
-          format: yaml
-        register: result
-  ```
-
-  Updated policy.
-  ```yaml
-  apiVersion: appprotect.f5.com/v1beta1
-  kind: APPolicy
-  metadata:
-    name: app1_waf
-  spec:
-    policy:
-      applicationLanguage: utf-8
-      enforcementMode: blocking
-      name: app1_waf
-      signatures:                     ### Changes added by ansible module
-      - enabled: false                ### Changes added by ansible module
-        signatureId: 200001834        ### Changes added by ansible module
-      template:
-        name: POLICY_TEMPLATE_NGINX_BASE
-  ```
-
-
-### Disable a signature on a URL
-  Input policy `app1_waf.yaml`
-  ```yaml
-  apiVersion: appprotect.f5.com/v1beta1
-  kind: APPolicy
-  metadata:
-    name: app1_waf
-  spec:
-    policy:
-      applicationLanguage: utf-8
-      enforcementMode: blocking
-      name: app1_waf
-      template:
-        name: POLICY_TEMPLATE_NGINX_BASE
-  ```
+3. Updated waf policy
+    ```yaml
+    apiVersion: appprotect.f5.com/v1beta1
+    kind: APPolicy
+    metadata:
+      name: waf_policy
+    spec:
+      policy:
+        applicationLanguage: utf-8
+        enforcementMode: blocking
+        name: waf_policy
+        urls:
+        - name: index.php
+          signatureOverrides:
+          - enabled: false
+            signatureId: 200001834
+        template:
+          name: POLICY_TEMPLATE_NGINX_BASE
+    ```
 
 
-  Playbook to disable signature on URL.
-  ```yaml
-  - name: Attack signatures
-    hosts: localhost
-    tasks:
-      - name: Disable signature on a URL
-        signatures:
-          signature_id: 200001834
-          enabled: False
-          entity_type: urls
-          entity: /index.php          
-          policy_path: "app1_waf.yaml"
-          format: yaml
-        register: result
-  ```
+## Example of using the ansible module with a JSON waf policy
+1. Input policy `waf_policy.json`
+    ```json
+    {
+      "policy": {
+        "applicationLanguage": "utf-8",
+        "enforcementMode": "blocking",
+        "name": "waf_policy",
+        "template": {
+          "name": "POLICY_TEMPLATE_NGINX_BASE"
+        }
+      }
+    }
+    ```
 
-  Updated policy.
-  ```yaml
-  apiVersion: appprotect.f5.com/v1beta1
-  kind: APPolicy
-  metadata:
-    name: app1_waf
-  spec:
-    policy:
-      applicationLanguage: utf-8
-      enforcementMode: blocking
-      name: app1_waf
-      template:
-        name: POLICY_TEMPLATE_NGINX_BASE
-      urls:                               ### Changes added by ansible module
-      - name: /index.php                  ### Changes added by ansible module
-        signatureOverrides:               ### Changes added by ansible module
-        - enabled: false                  ### Changes added by ansible module
-          signatureId: 200001834          ### Changes added by ansible module
-  ```
+2. Run the Ansible playbook to disable signature globally
+    ```yaml
+    - name: Disable signature on an entity
+      hosts: localhost
+      collections:
+        - skenderidis.f5_awaf   
+      tasks:
+        - name: Disable signature on an entity
+          viol_attack_signature:
+            policy_path: waf_policy.json
+            signature_id: 200001834
+            enabled: true
+            entity_type: urls
+            entity: index.php 
+            format: json
+    ```
 
-
-### Disable a signature on a parameter
-  Input policy `app1_waf.yaml`.
-  ```yaml
-  apiVersion: appprotect.f5.com/v1beta1
-  kind: APPolicy
-  metadata:
-    name: app1_waf
-  spec:
-    policy:
-      applicationLanguage: utf-8
-      enforcementMode: blocking
-      name: app1_waf
-      template:
-        name: POLICY_TEMPLATE_NGINX_BASE
-  ```
-
-  Playbook to disable signature on Parameter.
-  ```yaml
-  - name: Attack signatures
-    hosts: localhost
-    tasks:
-      - name: Disable signature on Parameter
-        signatures:
-          signature_id: 200001834
-          enabled: False
-          entity_type: parameters
-          entity: users          
-          policy_path: "app1_waf.yaml"
-          format: yaml
-        register: result
-  ```
-
-  Updated policy.
-  ```yaml
-  apiVersion: appprotect.f5.com/v1beta1
-  kind: APPolicy
-  metadata:
-    name: app1_waf
-  spec:
-    policy:
-      applicationLanguage: utf-8
-      enforcementMode: blocking
-      name: app1_waf
-      parameters:                         ### Changes added by ansible module
-      - name: users                       ### Changes added by ansible module
-        signatureOverrides:               ### Changes added by ansible module
-        - enabled: false                  ### Changes added by ansible module
-          signatureId: 200001834          ### Changes added by ansible module
-      template:
-        name: POLICY_TEMPLATE_NGINX_BASE
-  ```
+3. Updated waf policy
+    ```json
+    {
+      "policy": {
+        "name": "waf_policy",
+        "template": {
+          "name": "POLICY_TEMPLATE_NGINX_BASE"
+        },
+        "applicationLanguage": "utf-8",
+        "enforcementMode": "blocking",
+        "urls": [
+          {
+            "name": "index.php",
+            "signatureOverrides": [
+              {
+                "signatureId": 204855,
+                "enabled": true
+              }
+            ]
+          }
+        ]
+      }
+    }
+    ```

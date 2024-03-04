@@ -1,15 +1,14 @@
----
-- name: Test My Custom Module Locally
+- name: Disable signature globaly
   hosts: localhost
   collections:
     - skenderidis.f5_awaf   
   tasks:
-    - name: Disable threat_campaign
+    - name: Disable signature globaly
       viol_attack_signature_global:
-        policy_path: policy.json
-        signature_id: 204855
+        policy_path: waf_policy.yaml
+        signature_id: 200001834
         enabled: false
-        format: json
+        format: yaml
       register: result
 
     - name: Display Module Output

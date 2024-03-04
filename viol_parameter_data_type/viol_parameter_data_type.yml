@@ -1,13 +1,12 @@
----
-- name: Test My Custom Module Locally
+- name: VIOL_PARAMETER_DATA_TYPE
   hosts: localhost
   collections:
     - skenderidis.f5_awaf   
   tasks:
-    - name: Disable threat_campaign
+    - name: Modify Parameter's data type setting
       viol_parameter_data_type:
-        policy_path: policy.yaml
-        parameter_name: test
+        policy_path: waf_policy.yaml
+        parameter_name: user
         data_type: integer
         format: yaml
       register: result

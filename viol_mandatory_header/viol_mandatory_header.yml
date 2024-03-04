@@ -1,4 +1,3 @@
----
 - name: VIOL_MANDATORY_HEADER
   hosts: localhost
   collections:
@@ -6,7 +5,7 @@
   tasks:
     - name: Modify Header's mandatory setting
       viol_mandatory_header:
-        policy_path: policy.yaml
+        policy_path: waf_policy.yaml
         header_name: test
         enabled: false
         format: yaml

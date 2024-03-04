@@ -1,4 +1,3 @@
----
 - name: VIOL_PARAMETER_REPEATED
   hosts: localhost
   collections:
@@ -7,8 +6,8 @@
     - name: Modify Parameter's repeated setting
       viol_parameter_repeated:
         policy_path: waf_policy.yaml
-        parameter_name: test
-        enabled: true
+        parameter_name: user
+        enabled: false
         format: yaml
       register: result
 

@@ -1,4 +1,3 @@
----
 - name: VIOL_HEADER_LENGTH
   hosts: localhost
   collections:
@@ -6,7 +5,7 @@
   tasks:
     - name: Configure Header Length
       viol_header_length:
-        policy_path: app1_waf.yaml
+        policy_path: waf_policy.yaml
         length: 2048
         format: yaml
       register: result

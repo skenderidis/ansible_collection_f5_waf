@@ -1,10 +1,10 @@
----
-- name: Test My Custom Module Locally
+
+- name: VIOL_QUERY_STRING_LENGTH
   hosts: localhost
   collections:
     - skenderidis.f5_awaf   
   tasks:
-    - name: Disable threat_campaign
+    - name: Modify Query String Length
       viol_query_string_length:
         policy_path: waf_policy.yaml
         filetype: php

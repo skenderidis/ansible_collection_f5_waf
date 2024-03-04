@@ -1,10 +1,10 @@
----
-- name: Test My Custom Module Locally
+
+- name: VIOL_REQUEST_LENGTH
   hosts: localhost
   collections:
     - skenderidis.f5_awaf   
   tasks:
-    - name: Disable threat_campaign
+    - name: Modify Request Length
       viol_request_length:
         policy_path: waf_policy.yaml
         filetype: php

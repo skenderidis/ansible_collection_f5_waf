@@ -1,8 +1,21 @@
 # VIOL_COOKIE_MODIFIED module
 
-The **`viol_cookie_modified`** module has been created to assist with the false-positive of the `VIOL_COOKIE_MODIFIED`violations. It can configure the enforcementType of a cookie to either `allow` or `enforced` based on the cookie settings of a NAP / AWAF policy.
+The **`viol_cookie_modified`** module has been created to assist with the false-positive of the `VIOL_COOKIE_MODIFIED`violations. It can configure the enforcementType of a cookie to either `allow` or `enforced` based on the cookie settings of the NGINX App Protect or F5 AWAF declarative waf policy.
 
 Below you can find the input/outout parameters for the module
+
+```json
+{
+  "policy": {
+    "cookies": [
+      {
+        "enforcementType": "allow",
+        "name": "user"
+      }
+    ]
+  }
+}
+```
 
 Input:
 - **policy_path** (location of policy file)
@@ -15,9 +28,38 @@ Output
 - **msg** (Message from the module)
 - **changed** (True/False)
 
-## Examples of using the module on a playbook
-  Input policy `app1_waf.yaml`
-  
+> Note: By using this module the policy file will be updated with the new configuration.
+
+## Example of using the ansible module with a YAML waf policy
+1. Input policy `waf_policy.yaml` 
+    ```yaml
+    apiVersion: appprotect.f5.com/v1beta1
+    kind: APPolicy
+    metadata:
+      name: waf_policy
+    spec:
+      policy:
+        applicationLanguage: utf-8
+        enforcementMode: blocking
+        name: waf_policy
+        template:
+          name: POLICY_TEMPLATE_NGINX_BASE
+    ```
+
+2. Run the Ansible playbook to modify the enforcementType for a specific cookie `user`
+    ```yaml
+    - name: VIOL_COOKIE_MODIFIED
+      hosts: localhost
+      tasks:
+        - name: Modify the enforcementType of cookies
+          viol_cookie_modified:
+            policy_path: waf_policy.yaml
+            cookie_name: user
+            enforcementType: enforce
+            format: yaml
+    ```
+
+3. Updated waf policy
   ```yaml
   apiVersion: appprotect.f5.com/v1beta1
   kind: APPolicy
@@ -26,37 +68,9 @@ Output
   spec:
     policy:
       applicationLanguage: utf-8
-      enforcementMode: blocking
-      name: app1_waf
-      template:
-        name: POLICY_TEMPLATE_NGINX_BASE
-  ```
-
-  Playbook to modify the enforcementType for a specific cookie `user`
-  ```yaml
-  - name: VIOL_COOKIE_MODIFIED
-    hosts: localhost
-    tasks:
-      - name: Modify the allowed enforcementType of the cookies
-        viol_cookie_modified:
-          policy_path: app1_waf.yaml
-          cookie_name: user
-          enforcementType: enforce
-          format: yaml
-  ```
-
-  Updated policy.
-  ```yaml
-  apiVersion: appprotect.f5.com/v1beta1
-  kind: APPolicy
-  metadata:
-    name: app1_waf
-  spec:
-    policy:
-      applicationLanguage: utf-8
-      cookies:                      ### Changes added by ansible module
-      - enforcementType: allow      ### Changes added by ansible module
-        name: user                  ### Changes added by ansible module
+      cookies:
+      - enforcementType: allow
+        name: user
       enforcementMode: blocking
       name: app1_waf
       template:
@@ -64,3 +78,49 @@ Output
   ```
 
 
+## Example of using the ansible module with a JSON waf policy
+1. Input policy `waf_policy.json`
+    ```json
+    {
+      "policy": {
+        "applicationLanguage": "utf-8",
+        "enforcementMode": "blocking",
+        "name": "waf_policy",
+        "template": {
+          "name": "POLICY_TEMPLATE_NGINX_BASE"
+        }
+      }
+    }
+    ```
+2. Run the Ansible playbook to modify the enforcementType for a specific cookie `user`
+    ```yaml
+    - name: VIOL_COOKIE_MODIFIED
+      hosts: localhost
+      tasks:
+        - name: Modify the enforcementType of cookies
+          viol_cookie_modified:
+            policy_path: waf_policy.json
+            cookie_name: user
+            enforcementType: enforce
+            format: json
+    ```
+
+3. Updated waf policy
+    ```json
+    {
+      "policy": {
+        "name": "waf_policy",
+        "template": {
+          "name": "POLICY_TEMPLATE_NGINX_BASE"
+        },
+        "applicationLanguage": "utf-8",
+        "enforcementMode": "blocking",
+        "cookies": [
+          {
+            "enforcementType": "allow",
+            "name": "user"
+          }
+        ]
+      }
+    }
+    ```

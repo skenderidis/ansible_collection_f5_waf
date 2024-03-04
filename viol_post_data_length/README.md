@@ -2,6 +2,22 @@
 
 The **`viol_post_data_length`** module has been created to assist with the false-positive of the `VIOL_POST_DATA_LENGTH` violations. It can modify the configured length on the file type extensions of a NAP/AWAF policy.
 
+The **`viol_post_data_length`** module has been created to assist with the false-positive of the `VIOL_POST_DATA_LENGTH` violations. It can modify the configured post data length on the file type extensions of an NGINX App Protect or an F5 AWAF declarative waf policy.
+
+```json
+{
+  "policy": {
+    "filetypes": [
+      {
+        "name": "php",
+        "postDataLength": 2048,
+        "checkPostDataLength": true
+      }
+    ]
+  }
+}
+```
+
 Below you can find the input/outout parameters for the module
 
 Input:
@@ -15,9 +31,11 @@ Output
 - **msg** (Message from the module)
 - **changed** (True/False)
 
-## Examples of using the module on a playbook
-  Input policy `waf_policy.yaml`
-  
+> Note: By using this module the policy file will be updated with the new configuration.
+
+
+## Example of using the ansible module with a YAML waf policy
+1. Input policy `waf_policy.yaml`
   ```yaml
   apiVersion: appprotect.f5.com/v1beta1
   kind: APPolicy
@@ -32,12 +50,14 @@ Output
         name: POLICY_TEMPLATE_NGINX_BASE
   ```
 
-  RUN Playbook to modify the `Query String Length` for a specific filetype `php`
+2. Run the Ansible playbook to modify the **Post Data length** for a specific filetype
   ```yaml
-  - name: File Types
+  - name: VIOL_POST_DATA_LENGTH
     hosts: localhost
+    collections:
+      - skenderidis.f5_awaf   
     tasks:
-      - name: Allow a specific filetype
+      - name: Modify Post Data Length
         viol_post_data_length:
           policy_path: waf_policy.yaml
           filetype: php
@@ -45,7 +65,7 @@ Output
           format: yaml
   ```
 
-  Output of updated policy.
+3. Updated waf policy
   ```yaml
   apiVersion: appprotect.f5.com/v1beta1
   kind: APPolicy
@@ -55,14 +75,64 @@ Output
     policy:
       applicationLanguage: utf-8
       enforcementMode: blocking
-      filetypes:                       ### Changes added by ansible module
-      - checkPostDataLength: true      ### Changes added by ansible module
-        name: php                      ### Changes added by ansible module
-        postDataLength: 2048           ### Changes added by ansible module
+      filetypes:
+      - checkPostDataLength: true
+        name: php
+        postDataLength: 2048
       name: waf_policy
       template:
         name: POLICY_TEMPLATE_NGINX_BASE
   ```
 
 
+## Example of using the ansible module with a JSON waf policy
 
+1. Input policy `waf_policy.json`
+    ```json
+    {
+      "policy": {
+        "applicationLanguage": "utf-8",
+        "enforcementMode": "blocking",
+        "name": "waf_policy",
+        "template": {
+          "name": "POLICY_TEMPLATE_NGINX_BASE"
+        }
+      }
+    }
+    ```
+
+2. Run the Ansible playbook to modify the **Post Data length** for a specific filetype
+  ```yaml
+  - name: VIOL_POST_DATA_LENGTH
+    hosts: localhost
+    collections:
+      - skenderidis.f5_awaf   
+    tasks:
+      - name: Modify Post Data Length
+        viol_post_data_length:
+          policy_path: waf_policy.yaml
+          filetype: php
+          length: 2048
+          format: yaml
+  ```
+
+3. Updated waf policy
+    ```json
+    {
+      "policy": {
+        "name": "waf_policy",
+        "template": {
+          "name": "POLICY_TEMPLATE_NGINX_BASE"
+        },
+        "applicationLanguage": "utf-8",
+        "enforcementMode": "blocking",
+        "filetypes": [
+          {
+            "name": "php",
+            "postDataLength": 2048,
+            "checkPostDataLength": true
+          }
+        ]
+      }
+    }
+    ```

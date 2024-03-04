@@ -1,6 +1,6 @@
 # VIOL_URL_LENGTH module
 
-The **`viol_url_length`** module has been created to assist with the false-positive of the `VIOL_URL_LENGTH` violations. It can modify the configured length on the file type extensions of an NGINX App Protect or an F5 AWAF declarative waf policy.
+The **`viol_url_length`** module has been created to assist with the false-positive of the `VIOL_URL_LENGTH` violations. It can modify the configured url length on the file type extensions of an NGINX App Protect or an F5 AWAF declarative waf policy.
 
 ```json
 {
@@ -29,6 +29,8 @@ Output
 - **msg** (Message from the module)
 - **changed** (True/False)
 
+> Note: By using this module the policy file will be updated with the new configuration.
+
 ## Example of using the ansible module with a YAML waf policy
 
 1. Input policy `waf_policy.yaml`  
@@ -48,10 +50,12 @@ Output
 
 2. Run the Ansible playbook to modify the **URL length** for a specific filetype
     ```yaml
-    - name: File Types
+    - name: VIOL_URL_LENGTH
       hosts: localhost
+      collections:
+        - skenderidis.f5_awaf         
       tasks:
-        - name: Allow a specific filetype
+        - name: Modify URL Length
           viol_url_length:
             policy_path: waf_policy.yaml
             filetype: php
@@ -98,10 +102,12 @@ Output
 
 2. Run the Ansible playbook to modify the **URL length** for a specific filetype
     ```yaml
-    - name: File Types
+    - name: VIOL_URL_LENGTH
       hosts: localhost
+      collections:
+        - skenderidis.f5_awaf         
       tasks:
-        - name: Allow a specific filetype
+        - name: Modify URL Length
           viol_url_length:
             policy_path: waf_policy.json
             filetype: php

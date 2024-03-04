@@ -1,15 +1,16 @@
 ---
-- name: Test My Custom Module Locally
+- name: Modify Blocking Settings
   hosts: localhost
   collections:
     - skenderidis.f5_awaf   
   tasks:
-    - name: Disable threat_campaign
-      viol_attack_signature_global:
-        policy_path: policy.json
-        signature_id: 204855
-        enabled: false
-        format: json
+    - name: Modify Blocking Settings
+      blocking_settings:
+        policy_path: waf_policy.yaml
+        violation: VIOL_ATTACK_SIGNATURE
+        alarm: true
+        block: true
+        format: yaml
       register: result
 
     - name: Display Module Output

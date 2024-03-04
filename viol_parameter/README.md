@@ -1,6 +1,19 @@
 # VIOL_PARAMETER module
 
-The **`viol_parameter`** module has been created to assist with the false-positive of the `VIOL_PARAMETER` violations. It can allow/disallow parameters on the waf policy. 
+The **`viol_parameter`** module has been created to assist with the false-positive of the `VIOL_PARAMETER` violations. It can allow/disallow parameters on the NGINX App Protect or F5 AWAF declarative waf policy.
+
+```json
+{
+  "policy": {
+    "parameters": [
+      {
+        "name": "user",
+        "allowed": true
+      }
+    ]
+  }
+}
+```
 
 Input:
 - **policy_path** (location of policy file)
@@ -13,54 +26,104 @@ Output
 - **msg** (Message from the module)
 - **changed** (True/False)
 
+> Note: By using this module the policy file will be updated with the new configuration.
+
+
 ## Examples of using the module on a playbook
-
-  Input policy `waf_policy.yaml`
-  ```yaml
-  apiVersion: appprotect.f5.com/v1beta1
-  kind: APPolicy
-  metadata:
-    name: waf_policy
-  spec:
-    policy:
-      applicationLanguage: utf-8
-      enforcementMode: blocking
+1. Input policy `waf_policy.yaml` 
+    ```yaml
+    apiVersion: appprotect.f5.com/v1beta1
+    kind: APPolicy
+    metadata:
       name: waf_policy
-      template:
-        name: POLICY_TEMPLATE_NGINX_BASE
-  ```
+    spec:
+      policy:
+        applicationLanguage: utf-8
+        enforcementMode: blocking
+        name: waf_policy
+        template:
+          name: POLICY_TEMPLATE_NGINX_BASE
+    ```
 
+2. Run the Ansible playbook to allow a specific **parameter**
+    ```yaml
+    - name: VIOL_PARAMETER
+      hosts: localhost
+      collections:
+        - skenderidis.f5_awaf   
+      tasks:
+        - name: Allow/Disallow Parameter
+          viol_parameter:
+            policy_path: policy.yaml
+            parameter_name: user
+            enabled: true
+            format: yaml
+    ```
 
-  Playbook to allow the subviolation **IIS Unicode codepoints**.
-  ```yaml
-  - name: VIOL_PARAMETER
-    hosts: localhost
-    collections:
-      - skenderidis.f5_awaf   
-    tasks:
-      - name: Allow/Disallow Parameter
-        viol_parameter:
-          policy_path: policy.yaml
-          parameter_name: test
-          enabled: true
-          format: yaml
-  ```
+3. Updated waf policy
+    ```yaml
+    apiVersion: appprotect.f5.com/v1beta1
+    kind: APPolicy
+    metadata:
+      name: waf_policy
+    spec:
+      policy:
+        applicationLanguage: utf-8
+        enforcementMode: transparent
+        name: waf_policy
+        parameters:
+        - allowed: true
+          name: user
+        template:
+          name: POLICY_TEMPLATE_NGINX_BASE
+    ```
 
-  Updated policy.
-  ```yaml
-  apiVersion: appprotect.f5.com/v1beta1
-  kind: APPolicy
-  metadata:
-    name: waf_policy
-  spec:
-    policy:
-      applicationLanguage: utf-8
-      blocking-settings:                          ### Changes added by ansible module
-        evasions:                                 ### Changes added by ansible module
-        - description: IIS Unicode codepoints     ### Changes added by ansible module
-          enabled: true                           ### Changes added by ansible module
-      enforcementMode: blocking
-      name: app1_waf
-      template:
-        name: POLICY_TEMPLATE_NGINX_BASE
-  ```
+## Example of using the ansible module with a JSON waf policy
+1. Input policy `waf_policy.json`
+    ```json
+    {
+      "policy": {
+        "applicationLanguage": "utf-8",
+        "enforcementMode": "blocking",
+        "name": "waf_policy",
+        "template": {
+          "name": "POLICY_TEMPLATE_NGINX_BASE"
+        }
+      }
+    }
+    ```
+
+2. Run the Ansible playbook to allow a specific **parameter**
+    ```yaml
+    - name: VIOL_PARAMETER
+      hosts: localhost
+      collections:
+        - skenderidis.f5_awaf   
+      tasks:
+        - name: Allow/Disallow Parameter
+          viol_parameter:
+            policy_path: policy.json
+            parameter_name: user
+            enabled: true
+            format: json
+    ```
+
+3. Updated waf policy
+    ```json
+    {
+      "policy": {
+        "name": "waf_policy",
+        "template": {
+          "name": "POLICY_TEMPLATE_NGINX_BASE"
+        },
+        "applicationLanguage": "utf-8",
+        "enforcementMode": "blocking",
+        "parameters": [
+          {
+            "name": "user",
+            "allowed": true
+          }
+        ]
+      }
+    }
+    ```

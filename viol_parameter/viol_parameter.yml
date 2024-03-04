@@ -1,4 +1,3 @@
----
 - name: VIOL_PARAMETER
   hosts: localhost
   collections:
@@ -6,8 +5,8 @@
   tasks:
     - name: Allow/Disallow Parameter
       viol_parameter:
-        policy_path: policy.yaml
-        parameter_name: test
+        policy_path: waf_policy.yaml
+        parameter_name: user
         enabled: true
         format: yaml
       register: result
