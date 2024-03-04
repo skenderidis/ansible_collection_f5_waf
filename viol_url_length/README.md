@@ -30,53 +30,52 @@ Output
 
 ## Example of using the ansible module with a YAML waf policy
 
-1. Input policy `waf_policy.yaml`
-  
-  ```yaml
-  apiVersion: appprotect.f5.com/v1beta1
-  kind: APPolicy
-  metadata:
-    name: waf_policy
-  spec:
-    policy:
-      applicationLanguage: utf-8
-      enforcementMode: blocking
-      name: policy
-      template:
-        name: POLICY_TEMPLATE_NGINX_BASE
-  ```
+1. Input policy `waf_policy.yaml`  
+    ```yaml
+    apiVersion: appprotect.f5.com/v1beta1
+    kind: APPolicy
+    metadata:
+      name: waf_policy
+    spec:
+      policy:
+        applicationLanguage: utf-8
+        enforcementMode: blocking
+        name: policy
+        template:
+          name: POLICY_TEMPLATE_NGINX_BASE
+    ```
 
-2. RUN Playbook to modify the **URL length** for a specific filetype
-  ```yaml
-  - name: File Types
-    hosts: localhost
-    tasks:
-      - name: Allow a specific filetype
-        viol_url_length:
-          policy_path: waf_policy.yaml
-          filetype: php
-          length: 2048
-          format: yaml
-  ```
+2. Run the Ansible playbook to modify the **URL length** for a specific filetype
+    ```yaml
+    - name: File Types
+      hosts: localhost
+      tasks:
+        - name: Allow a specific filetype
+          viol_url_length:
+            policy_path: waf_policy.yaml
+            filetype: php
+            length: 2048
+            format: yaml
+    ```
 
 3. Updated waf policy
-  ```yaml
-  apiVersion: appprotect.f5.com/v1beta1
-  kind: APPolicy
-  metadata:
-    name: waf_policy
-  spec:
-    policy:
-      applicationLanguage: utf-8
-      enforcementMode: blocking
-      filetypes:
-      - checkUrlLength: true
-        name: php
-        urlLength: 2048
+    ```yaml
+    apiVersion: appprotect.f5.com/v1beta1
+    kind: APPolicy
+    metadata:
       name: waf_policy
-      template:
-        name: POLICY_TEMPLATE_NGINX_BASE
-  ```
+    spec:
+      policy:
+        applicationLanguage: utf-8
+        enforcementMode: blocking
+        filetypes:
+        - checkUrlLength: true
+          name: php
+          urlLength: 2048
+        name: waf_policy
+        template:
+          name: POLICY_TEMPLATE_NGINX_BASE
+    ```
 
 
 ## Example of using the ansible module with a JSON waf policy
@@ -96,39 +95,39 @@ Output
     }
     ```
 
-2. RUN Playbook to modify the **URL length** for a specific filetype
-  ```yaml
-  - name: File Types
-    hosts: localhost
-    tasks:
-      - name: Allow a specific filetype
-        viol_url_length:
-          policy_path: waf_policy.json
-          filetype: php
-          length: 2048
-          format: json
-  ```
+2. Run the Ansible playbook to modify the **URL length** for a specific filetype
+    ```yaml
+    - name: File Types
+      hosts: localhost
+      tasks:
+        - name: Allow a specific filetype
+          viol_url_length:
+            policy_path: waf_policy.json
+            filetype: php
+            length: 2048
+            format: json
+    ```
 
 3. Updated waf policy
-  ```json
-  {
-    "policy": {
-      "name": "waf_policy",
-      "template": {
-        "name": "POLICY_TEMPLATE_NGINX_BASE"
-      },
-      "applicationLanguage": "utf-8",
-      "enforcementMode": "blocking",
-      "filetypes": [
-        {
-          "name": "php",
-          "urlLength": 2048,
-          "checkUrlLength": true
-        }
-      ]
+    ```json
+    {
+      "policy": {
+        "name": "waf_policy",
+        "template": {
+          "name": "POLICY_TEMPLATE_NGINX_BASE"
+        },
+        "applicationLanguage": "utf-8",
+        "enforcementMode": "blocking",
+        "filetypes": [
+          {
+            "name": "php",
+            "urlLength": 2048,
+            "checkUrlLength": true
+          }
+        ]
+      }
     }
-  }
-  ```
+    ```
 
 
 
