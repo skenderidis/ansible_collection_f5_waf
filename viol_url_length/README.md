@@ -83,18 +83,18 @@ Output
 
 1. Input policy `waf_policy.json`
   
-  ```json
-  {
-    "policy": {
-      "applicationLanguage": "utf-8",
-      "enforcementMode": "blocking",
-      "name": "waf_policy",
-      "template": {
-        "name": "POLICY_TEMPLATE_NGINX_BASE"
+    ```json
+    {
+      "policy": {
+        "applicationLanguage": "utf-8",
+        "enforcementMode": "blocking",
+        "name": "waf_policy",
+        "template": {
+          "name": "POLICY_TEMPLATE_NGINX_BASE"
+        }
       }
     }
-  }
-  ```
+    ```
 
 2. RUN Playbook to modify the **URL length** for a specific filetype
   ```yaml
