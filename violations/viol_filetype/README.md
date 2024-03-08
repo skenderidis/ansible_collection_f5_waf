@@ -1,4 +1,4 @@
-# viol_filetype Module
+# VIOL_FILETYPE Module
 
 The **`viol_filetype`** module has been created to assist with the false-positive of the `VIOL_FILETYPE` violations. It can allow/disallow file type extensions on the NGINX App Protect or F5 AWAF declarative waf policy.
 

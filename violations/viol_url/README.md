@@ -1,4 +1,4 @@
-# Url module
+# VIOL_URL module
 
 The **`url`** module has been created to assist with the false-positive of the `VIOL_URL` violations. It can allow/disallow urls on an NGINX App Protect or an F5 AWAF declarative waf policy.
 
