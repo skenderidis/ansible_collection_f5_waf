@@ -23,68 +23,68 @@ The current collection supports the most common violations that are available wi
 
 | Violations  | module | Support | Status | |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| Manage Blocking Settings  | blocking_settings  |  AWAF / NAP  |  100%  | [Documentation](blocking_settings/) |
-| Manage Enforcement Mode | enforcement_mode  |  AWAF / NAP  |  100%  | [Documentation](enforcement/) |
-| VIOL_ATTACK_SIGNATURE  | viol_attack_signature  |  AWAF / NAP  |  100%  | [Documentation](viol_attack_signature/) |
-| VIOL_ATTACK_SIGNATURE  | viol_attack_signature_global  |  AWAF / NAP  |  100%  | [Documentation](viol_attack_signature_global/) |
-| VIOL_FILETYPE | viol_filetype  |  AWAF / NAP  |  100%  | [Documentation](viol_filetype/)| 
-| VIOL_POST_DATA_LENGTH | viol_post_data_length  |  AWAF / NAP  |  100%  | [Documentation](viol_post_data_length/) |
-| VIOL_QUERY_STRING_LENGTH | viol_query_string_length  |  AWAF / NAP  |  100%  | [Documentation](viol_query_string_length/) |
-| VIOL_REQUEST_LENGTH | viol_request_length  |  AWAF / NAP  |  100%  | [Documentation](viol_request_length/) |
-| VIOL_URL_LENGTH | viol_url_length  |  AWAF / NAP  |  100%  | [Documentation](viol_url_length/) |
-| VIOL_HTTP_PROTOCOL | viol_http_protocol  |  AWAF / NAP  |  100%  | [Documentation](viol_http_protocol/) |
-| VIOL_EVASION | viol_evasion  |  AWAF / NAP  |  100%  | [Documentation](viol_evasion/) |
-| VIOL_URL  |  viol_url  |  AWAF / NAP  |  100%  | [Documentation](viol_url/) |
-| VIOL_METHOD  |  viol_method  |  AWAF / NAP  |  100%  | [Documentation](viol_method/) |
-| VIOL_HEADER_LENGTH  |  viol_header_length  |  AWAF / NAP  |  100%  | [Documentation](viol_header_length/) |
-| VIOL_COOKIE_LENGTH  |  viol_cookie_length  |  AWAF / NAP  |  100%  | [Documentation](viol_cookie_length/) |
-| VIOL_COOKIE_MODIFIED  |  viol_cookie_modified  |  AWAF / NAP  | 100%  | [Documentation](viol_cookie_modified/) |
-| VIOL_HTTP_RESPONSE_STATUS  |  viol_http_response_status  |  AWAF / NAP  | 100%  | [Documentation](viol_http_response_status/) |
-| VIOL_THREAT_CAMPAIGN  |  viol_threat_campaign |  AWAF / NAP  |  100%  | [Documentation](viol_threat_campaign/) |
-| VIOL_PARAMETER  |  viol_parameter  |  AWAF / NAP  |  100%  | [Documentation](viol_parameter/) |
-| VIOL_MANDATORY_HEADER  |  viol_mandatory_header  |  AWAF / NAP  | 100%  | [Documentation](viol_mandatory_header/) |
-| VIOL_MANDATORY_PARAMETER  | viol_mandatory_parameter   |  AWAF / NAP  | 100%  | [Documentation](viol_mandatory_parameter/) |
-| VIOL_PARAMETER_EMPTY_VALUE  |  viol_parameter_empty_value  |  AWAF / NAP  | 100%  | [Documentation](viol_parameter_empty_value/) |
-| VIOL_PARAMETER_REPEATED  |  viol_parameter_repeated  |  AWAF / NAP  | 100%  | [Documentation](viol_parameter_repeated/) |
-| VIOL_PARAMETER_DATA_TYPE  |  viol_parameter_data_type  |  AWAF / NAP  | 100%  | [Documentation](viol_parameter_data_type/) |
-| VIOL_PARAMETER_LOCATION  |    |  - / -  | 0%  | [Pending]() |
-| VIOL_PARAMETER_NAME_METACHAR  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_PARAMETER_VALUE_METACHAR  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_URL_METACHAR  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_HEADER_METACHAR  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_MANDATORY_REQUEST_BODY  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_PARAMETER_ARRAY_VALUE  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_PARAMETER_MULTIPART_NULL_VALUE  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_PARAMETER_NUMERIC_VALUE  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_PARAMETER_STATIC_VALUE  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_PARAMETER_VALUE_BASE64  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_PARAMETER_VALUE_LENGTH  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_PARAMETER_VALUE_REGEXP  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_RATING_THREAT  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_RATING_NEED_EXAMINATION  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_BOT_CLIENT  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_ASM_COOKIE_MODIFIED  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_BLACKLISTED_IP  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_COOKIE_EXPIRED  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_COOKIE_MALFORMED  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_DATA_GUARD  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_ENCODING  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_FILE_UPLOAD  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_FILE_UPLOAD_IN_BODY  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_GRAPHQL_MALFORMED  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_GRAPHQL_FORMAT  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_GRAPHQL_INTROSPECTION_QUERY  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_GRAPHQL_ERROR_RESPONSE  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_GRPC_FORMAT  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_GRPC_MALFORMED  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_GRPC_METHOD  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_JSON_FORMAT  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_JSON_MALFORMED  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_JSON_SCHEMA  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_REQUEST_MAX_LENGTH  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_URL_CONTENT_TYPE  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_XML_FORMAT  |    |  - / -  |  0%  | [Pending]() |
-| VIOL_XML_MALFORMED  |    |  - / -  |  0%  | [Pending]() |
+| Manage Blocking Settings  | blocking_settings  |  AWAF / NAP  | [Documentation](violations/blocking_settings/) |
+| Manage Enforcement Mode | enforcement_mode  |  AWAF / NAP  | [Documentation](violations/enforcement/) |
+| VIOL_ATTACK_SIGNATURE  | viol_attack_signature  |  AWAF / NAP  | [Documentation](violations/viol_attack_signature/) |
+| VIOL_ATTACK_SIGNATURE  | viol_attack_signature_global  |  AWAF / NAP  | [Documentation](violations/viol_attack_signature_global/) |
+| VIOL_FILETYPE | viol_filetype  |  AWAF / NAP  | [Documentation](violations/viol_filetype/)| 
+| VIOL_POST_DATA_LENGTH | viol_post_data_length  |  AWAF / NAP  | [Documentation](violations/viol_post_data_length/) |
+| VIOL_QUERY_STRING_LENGTH | viol_query_string_length  |  AWAF / NAP  | [Documentation](violations/viol_query_string_length/) |
+| VIOL_REQUEST_LENGTH | viol_request_length  |  AWAF / NAP  | [Documentation](violations/viol_request_length/) |
+| VIOL_URL_LENGTH | viol_url_length  |  AWAF / NAP  | [Documentation](violations/viol_url_length/) |
+| VIOL_HTTP_PROTOCOL | viol_http_protocol  |  AWAF / NAP  | [Documentation](violations/viol_http_protocol/) |
+| VIOL_EVASION | viol_evasion  |  AWAF / NAP  | [Documentation](violations/viol_evasion/) |
+| VIOL_URL  |  viol_url  |  AWAF / NAP  | [Documentation](violations/viol_url/) |
+| VIOL_METHOD  |  viol_method  |  AWAF / NAP  | [Documentation](violations/viol_method/) |
+| VIOL_HEADER_LENGTH  |  viol_header_length  |  AWAF / NAP  | [Documentation](violations/viol_header_length/) |
+| VIOL_COOKIE_LENGTH  |  viol_cookie_length  |  AWAF / NAP  | [Documentation](violations/viol_cookie_length/) |
+| VIOL_COOKIE_MODIFIED  |  viol_cookie_modified  |  AWAF / NAP  | [Documentation](violations/viol_cookie_modified/) |
+| VIOL_HTTP_RESPONSE_STATUS  |  viol_http_response_status  |  AWAF / NAP  | [Documentation](violations/viol_http_response_status/) |
+| VIOL_THREAT_CAMPAIGN  |  viol_threat_campaign |  AWAF / NAP  | [Documentation](violations/viol_threat_campaign/) |
+| VIOL_PARAMETER  |  viol_parameter  |  AWAF / NAP  | [Documentation](violations/viol_parameter/) |
+| VIOL_MANDATORY_HEADER  |  viol_mandatory_header  |  AWAF / NAP  | [Documentation](violations/viol_mandatory_header/) |
+| VIOL_MANDATORY_PARAMETER  | viol_mandatory_parameter   |  AWAF / NAP  | [Documentation](violations/viol_mandatory_parameter/) |
+| VIOL_PARAMETER_EMPTY_VALUE  |  viol_parameter_empty_value  |  AWAF / NAP  | [Documentation](violations/viol_parameter_empty_value/) |
+| VIOL_PARAMETER_REPEATED  |  viol_parameter_repeated  |  AWAF / NAP  | [Documentation](violations/viol_parameter_repeated/) |
+| VIOL_PARAMETER_DATA_TYPE  |  viol_parameter_data_type  |  AWAF / NAP  | [Documentation](violations/viol_parameter_data_type/) |
+| VIOL_PARAMETER_LOCATION  |    |  - / -  | [Pending]() |
+| VIOL_PARAMETER_NAME_METACHAR  |    |  - / -  | [Pending]() |
+| VIOL_PARAMETER_VALUE_METACHAR  |    |  - / -  | [Pending]() |
+| VIOL_URL_METACHAR  |    |  - / -  | [Pending]() |
+| VIOL_HEADER_METACHAR  |    |  - / -  | [Pending]() |
+| VIOL_MANDATORY_REQUEST_BODY  |    |  - / -  | [Pending]() |
+| VIOL_PARAMETER_ARRAY_VALUE  |    |  - / -  | [Pending]() |
+| VIOL_PARAMETER_MULTIPART_NULL_VALUE  |    |  - / -  | [Pending]() |
+| VIOL_PARAMETER_NUMERIC_VALUE  |    |  - / -  | [Pending]() |
+| VIOL_PARAMETER_STATIC_VALUE  |    |  - / -  | [Pending]() |
+| VIOL_PARAMETER_VALUE_BASE64  |    |  - / -  | [Pending]() |
+| VIOL_PARAMETER_VALUE_LENGTH  |    |  - / -  | [Pending]() |
+| VIOL_PARAMETER_VALUE_REGEXP  |    |  - / -  | [Pending]() |
+| VIOL_RATING_THREAT  |    |  - / -  | [Pending]() |
+| VIOL_RATING_NEED_EXAMINATION  |    |  - / -  | [Pending]() |
+| VIOL_BOT_CLIENT  |    |  - / -  | [Pending]() |
+| VIOL_ASM_COOKIE_MODIFIED  |    |  - / -  | [Pending]() |
+| VIOL_BLACKLISTED_IP  |    |  - / -  | [Pending]() |
+| VIOL_COOKIE_EXPIRED  |    |  - / -  | [Pending]() |
+| VIOL_COOKIE_MALFORMED  |    |  - / -  | [Pending]() |
+| VIOL_DATA_GUARD  |    |  - / -  | [Pending]() |
+| VIOL_ENCODING  |    |  - / -  | [Pending]() |
+| VIOL_FILE_UPLOAD  |    |  - / -  | [Pending]() |
+| VIOL_FILE_UPLOAD_IN_BODY  |    |  - / -  | [Pending]() |
+| VIOL_GRAPHQL_MALFORMED  |    |  - / -  | [Pending]() |
+| VIOL_GRAPHQL_FORMAT  |    |  - / -  | [Pending]() |
+| VIOL_GRAPHQL_INTROSPECTION_QUERY  |    |  - / -  | [Pending]() |
+| VIOL_GRAPHQL_ERROR_RESPONSE  |    |  - / -  | [Pending]() |
+| VIOL_GRPC_FORMAT  |    |  - / -  | [Pending]() |
+| VIOL_GRPC_MALFORMED  |    |  - / -  | [Pending]() |
+| VIOL_GRPC_METHOD  |    |  - / -  | [Pending]() |
+| VIOL_JSON_FORMAT  |    |  - / -  | [Pending]() |
+| VIOL_JSON_MALFORMED  |    |  - / -  | [Pending]() |
+| VIOL_JSON_SCHEMA  |    |  - / -  | [Pending]() |
+| VIOL_REQUEST_MAX_LENGTH  |    |  - / -  | [Pending]() |
+| VIOL_URL_CONTENT_TYPE  |    |  - / -  | [Pending]() |
+| VIOL_XML_FORMAT  |    |  - / -  | [Pending]() |
+| VIOL_XML_MALFORMED  |    |  - / -  | [Pending]() |
 
 
 ## How to use the collection
