@@ -6,25 +6,6 @@ The **viol_attack_signature** module has been created to assist with the false-p
 3. `parameters`
 4. `cookies`
 
-```json
-{
-  "policy": {
-    "urls": [
-      {
-        "name": "index.php",
-        "signatureOverrides": [
-          {
-            "signatureId": 204855,
-            "enabled": true
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-
 Below you can find the input/outout parameters for the module
 
 Input:
@@ -41,6 +22,8 @@ Output
 - **changed** (True/False)
 
 > Note: By using this module the policy file will be updated with the new configuration.
+
+> It's important to note that only specific key/value pairs within the JSON files are modified, while other aspects of the policy remain unchanged.
 
 ## Example of using the ansible module with a YAML waf policy
 1. Input policy `waf_policy.yaml` 

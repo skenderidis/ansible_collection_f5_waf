@@ -2,6 +2,9 @@
 
 The **`viol_http_response_status`** module has been created to assist with the false-positive of the `VIOL_HTTP_RESPONSE_STATUS` violations. It can assist by adding the HTTP response code on the allowed list of the NGINX App Protect or F5 AWAF declarative waf policy.
 
+It's important to note that only specific key/value pairs within the JSON files are modified, while other aspects of the policy remain unchanged.
+In the JSON below you can find the key/values that the module will modify.
+
 ```json
 {
   "policy": {
@@ -22,12 +25,12 @@ The **`viol_http_response_status`** module has been created to assist with the f
 
 Below you can find the input/outout parameters for the module
 
-Input:
+**Input**:
 - **policy_path** (location of policy file)
 - **code** (the HTTP Response code that you would like to allow)
 - **format** (*json* or *yaml*)
 
-Output
+**Output**:
 - **policy** (Policy output)
 - **msg** (Message from the module)
 - **changed** (True/False)

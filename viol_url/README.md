@@ -98,7 +98,7 @@ Output
     }
     ```
 
-2. Run the Ansible playbook to modify the **URL length** for a specific filetype
+2. Run the Ansible playbook to allow/disallow a specific  **URL**
     ```yaml
     - name: VIOL_URL
       hosts: localhost

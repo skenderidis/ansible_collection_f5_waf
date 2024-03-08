@@ -2,6 +2,9 @@
 
 The **`viol_threat_campaign`** module has been created to assist with the false-positive of the `VIOL_THREAT_CAMPAIGN` violations. It can disable/enable specific theat campaign signatures of an NGINX App Protect or an F5 AWAF declarative waf policy.
 
+It's important to note that only specific key/value pairs within the JSON files are modified, while other aspects of the policy remain unchanged.
+In the JSON below you can find the key/values that the module will modify.
+
   ```json
   {
     "policy": {
@@ -17,13 +20,13 @@ The **`viol_threat_campaign`** module has been created to assist with the false-
 
 Below you can find the input/outout parameters for the module
 
-Input:
+**Input**:
 - **policy_path** (location of policy file)
 - **name** (Threat Campaign name that you want to disable/enable)
 - **format** (*json* or *yaml*)
 - **enabled** (*True* or *False*. Defaults to False)
 
-Output
+**Output**:
 - **policy** (Policy output)
 - **msg** (Message from the module)
 - **changed** (True/False)

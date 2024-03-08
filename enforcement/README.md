@@ -5,14 +5,6 @@ The **`enforcement`** module has been created to allow the user modify the enfor
 1. blocking
 1. transparent
 
-```json
-{
-  "policy": {
-    "enforcementMode": "transparent",
-  }
-}
-```
-
 Below you can find the input/outout parameters for the module
 
 Input:
@@ -26,6 +18,8 @@ Output
 - **changed** (True/False)
 
 > Note: By using this module the policy file will be updated with the new configuration.
+
+> It's important to note that only specific key/value pairs within the JSON files are modified, while other aspects of the policy remain unchanged.
 
 ## Example of using the ansible module with a YAML waf policy
 1. Input policy `waf_policy.yaml` 

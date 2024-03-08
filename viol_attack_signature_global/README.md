@@ -2,6 +2,9 @@
 
 The **viol_attack_signature_global** module has been created to assist with the false-positive of the `VIOL_ATTACK_SIGNATURE` violations. It can can disable/enable signatures globally on the NGINX App Protect or F5 AWAF declarative waf policy.
 
+It's important to note that only specific key/value pairs within the JSON files are modified, while other aspects of the policy remain unchanged.
+In the JSON below you can find the key/values that the module will modify.
+
 ```json
 {
   "policy": {

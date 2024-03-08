@@ -2,6 +2,8 @@
 
 The **`viol_mandatory_header`** module has been created to assist with the false-positive of the `VIOL_MANDATORY_HEADER` violations. It can change the settings that allows/disallows a Header to be present on a transaction on the NGINX App Protect or F5 AWAF declarative waf policy.
 
+It's important to note that only specific key/value pairs within the JSON files are modified, while other aspects of the policy remain unchanged.
+In the JSON below you can find the key/values that the module will modify.
 
 ```json
 {
@@ -16,16 +18,15 @@ The **`viol_mandatory_header`** module has been created to assist with the false
 }
 ```
 
-
 Below you can find the input/outout parameters for the module
 
-Input:
+**Input**:
 - **policy_path** (location of policy file)
 - **header_name** (the name of the Header you want to modify)
 - **enabled** (*True* or *False*. Defaults to True)
 - **format** (*json* or *yaml*)
 
-Output
+**Output**:
 - **policy** (Policy output)
 - **msg** (Message from the module)
 - **changed** (True/False)

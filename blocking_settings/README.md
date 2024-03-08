@@ -62,37 +62,23 @@ The **`blocking_settings`** module has been created to change the `Alarm` and `B
 1. VIOL_XML_MALFORMED
 
 
-```json
-{
-  "policy": {
-    "blocking-settings": {
-      "violations": [
-        {
-          "name": "VIOL_RATING_THREAT",
-          "block": true,
-          "alarm": true
-        }
-      ]
-    }
-  }
-}
-```
-
 Below you can find the input/outout parameters for the module
 
-Input:
+**Input**:
 - **policy_path** (location of policy file)
 - **alarm** (*True* or *False*)
 - **block** (*True* or *False*)
 - **viol_name** (The name of the Violation you want to modify)
 - **format** (*json* or *yaml*)
 
-Output
+**Output**
 - **policy** (Policy output)
 - **msg** (Message from the module)
 - **changed** (True/False)
 
-> Note: By using this module the policy file will be updated with the new configuration.
+> By using this module the policy file will be updated with the new configuration.
+
+> It's important to note that only specific key/value pairs within the JSON files are modified, while other aspects of the policy remain unchanged.
 
 ## Example of using the ansible module with a YAML waf policy
 1. Input policy `waf_policy.yaml` 

@@ -23,6 +23,9 @@ The **`http_protocol`** module has been created to assist with the false-positiv
 1. Bad host header value
 1. Check maximum number of cookies
 
+It's important to note that only specific key/value pairs within the JSON files are modified, while other aspects of the policy remain unchanged.
+In the JSON below you can find the key/values that the module will modify.
+
 ```json
 {
   "policy": {
@@ -40,13 +43,13 @@ The **`http_protocol`** module has been created to assist with the false-positiv
 
 Below you can find the input/outout parameters for the module
 
-Input:
+**Input**:
 - **policy_path** (location of policy file)
 - **http_protocol** (Sub-violation that you want to disable/enable)
 - **format** (*json* or *yaml*)
 - **enabled** (*True* or *False*. Defaults to True)
 
-Output
+**Output**:
 - **policy** (Policy output)
 - **msg** (Message from the module)
 - **changed** (True/False)

@@ -1,38 +1,52 @@
-# Managing Security Policies with Ansible Modules for F5 and NGINX Web Application Firewall (WAF)
-Web Application Firewalls (WAFs) are essential components of modern cybersecurity infrastructure, protecting web applications from a variety of threats including SQL injection, cross-site scripting (XSS), and other malicious activities. In this guide, we'll explore how to leverage Ansible modules to manage security policies for BIGIP AWAF and NGINX AppProtect using JSON and YAML configuration files.
+# Managing F5 and NGINX waf policies with Ansible collection
+In this guide, we'll explore how to leverage this ansible galaxy collection (**`skenderidis.f5_waf`**) to fine-tune waf policies for BIGIP AWAF and NGINX AppProtect, that are stored in JSON or YAML files and are used to implement Security Automation (DevSecOps).
+The collection aims to simplify the process of modifying and updating WAF policies, enabling seamless security automation for your web applications.
 
-**Prerequisites**
-Ansible Installed: Ensure that Ansible is installed on your local machine or Ansible control node.
+**The Need for Automation**
+
+Managing WAF policies manually can be a daunting and time-consuming task, especially in large-scale web environments where policies require frequent updates to combat evolving threats. The traditional approach of manually modifying JSON or YAML files to manage these policies adds an additional layer of complexity, exacerbating the challenge.
+However, an effective solution to this problem lies in leveraging automation tools such as Ansible. This Ansible collection offers a straightforward way to programmatically modify WAF policies, empowering users to automate security tasks and ensure continuous protection for their web applications.
+
+Furthermore, by integrating this Ansible collection with Ansible Tower, SecOps teams can significantly streamline their workflows. Ansible Tower provides a centralized platform graphical user interface (GUI) for managing automation tasks, complete with features such as role-based access control, scheduling, and auditing. This integration simplifies the management of WAF policies, allowing teams to efficiently deploy and monitor changes across their web environments. Ultimately, it enables organizations to strengthen their security posture while minimizing the time and effort required for policy management.
 
 
-Violations Supported
+<p align="center">
+  <img src="images/ansible_tower.png" style="width:65%">
+</p>
+
+
+## Violations Supported
+
+The current collection supports the most common violations that are available with F5 AWAF or NGINX App Protect. The table below lists all the violations supported by either F5 AWAF or NGINX App Protect and provides the module that has been created for that particular violation along with its documentation page. The name of the modules are similar to the violation name in order to keep consistency between modules and violation.
+
+> If you require a specific violation, please raise a GitHub issue with more details.
 
 | Violations  | module | Support | Status | |
 | ------------- | ------------- | ------------- | ------------- | ------------- |
-| Manage Blocking Settings  | blocking_settings  |  AWAF / NAP  |  100%  | [Examples](#) |
-| Manage Enforcement Mode | enforcement_mode  |  AWAF / NAP  |  100%  | [Examples](#) |
-| VIOL_ATTACK_SIGNATURE  | viol_attack_signature  |  AWAF / NAP  |  100%  | [Examples](signatures.md) |
-| VIOL_ATTACK_SIGNATURE  | viol_attack_signature_global  |  AWAF / NAP  |  100%  | [Examples](signatures.md) |
-| VIOL_FILETYPE | viol_filetype  |  AWAF / NAP  |  100%  | [Examples](file_types.md)| 
-| VIOL_POST_DATA_LENGTH | viol_post_data_length  |  AWAF / NAP  |  100%  | [Examples](file_length.md) |
-| VIOL_QUERY_STRING_LENGTH | viol_query_string_length  |  AWAF / NAP  |  100%  | [Examples](file_length.md) |
-| VIOL_REQUEST_LENGTH | viol_request_length  |  AWAF / NAP  |  100%  | [Examples](file_length.md) |
-| VIOL_URL_LENGTH | viol_url_length  |  AWAF / NAP  |  100%  | [Examples](file_length.md) |
-| VIOL_HTTP_PROTOCOL | viol_http_protocol  |  AWAF / NAP  |  100%  | [Examples](http_protocol.md) |
-| VIOL_EVASION | viol_evasion  |  AWAF / NAP  |  100%  | [Examples](evasion.md) |
-| VIOL_URL  |  viol_url  |  AWAF / NAP  |  100%  | [Examples](url.md) |
-| VIOL_METHOD  |  viol_method  |  AWAF / NAP  |  100%  | [Examples](method.md) |
-| VIOL_HEADER_LENGTH  |  viol_header_length  |  AWAF / NAP  |  100%  | [Examples](header_length.md) |
-| VIOL_COOKIE_LENGTH  |  viol_cookie_length  |  AWAF / NAP  |  100%  | [Examples](cookie_length.md) |
-| VIOL_COOKIE_MODIFIED  |  viol_cookie_modified  |  AWAF / NAP  | 100%  | [Examples](cookie_modified.md) |
-| VIOL_HTTP_RESPONSE_STATUS  |  viol_http_response_status  |  AWAF / NAP  | 100%  | [Examples](status_code.md) |
-| VIOL_THREAT_CAMPAIGN  |  viol_threat_campaign |  AWAF / NAP  |  100%  | [Examples](threat_campaign.md) |
-| VIOL_PARAMETER  |  viol_parameter  |  AWAF / NAP  |  100%  | [Examples](parameter.md) |
-| VIOL_MANDATORY_HEADER  |  viol_mandatory_header  |  AWAF / NAP  | 100%  | [Examples](mandatory_header.md) |
-| VIOL_MANDATORY_PARAMETER  | viol_mandatory_parameter   |  AWAF / NAP  | 100%  | [Examples](mandatory_parameter.md) |
-| VIOL_PARAMETER_EMPTY_VALUE  |  viol_parameter_empty_value  |  AWAF / NAP  | 100%  | [Examples](parameter_empty.md) |
-| VIOL_PARAMETER_REPEATED  |  viol_parameter_repeated  |  AWAF / NAP  | 100%  | [Examples](parameter_repeated.md) |
-| VIOL_PARAMETER_DATA_TYPE  |  viol_parameter_data_type  |  AWAF / NAP  | 100%  | [Examples](parameter_data_type.md) |
+| Manage Blocking Settings  | blocking_settings  |  AWAF / NAP  |  100%  | [Documentation](blocking_settings/) |
+| Manage Enforcement Mode | enforcement_mode  |  AWAF / NAP  |  100%  | [Documentation](enforcement/) |
+| VIOL_ATTACK_SIGNATURE  | viol_attack_signature  |  AWAF / NAP  |  100%  | [Documentation](viol_attack_signature/) |
+| VIOL_ATTACK_SIGNATURE  | viol_attack_signature_global  |  AWAF / NAP  |  100%  | [Documentation](viol_attack_signature_global/) |
+| VIOL_FILETYPE | viol_filetype  |  AWAF / NAP  |  100%  | [Documentation](viol_filetype/)| 
+| VIOL_POST_DATA_LENGTH | viol_post_data_length  |  AWAF / NAP  |  100%  | [Documentation](viol_post_data_length/) |
+| VIOL_QUERY_STRING_LENGTH | viol_query_string_length  |  AWAF / NAP  |  100%  | [Documentation](viol_query_string_length/) |
+| VIOL_REQUEST_LENGTH | viol_request_length  |  AWAF / NAP  |  100%  | [Documentation](viol_request_length/) |
+| VIOL_URL_LENGTH | viol_url_length  |  AWAF / NAP  |  100%  | [Documentation](viol_url_length/) |
+| VIOL_HTTP_PROTOCOL | viol_http_protocol  |  AWAF / NAP  |  100%  | [Documentation](viol_http_protocol/) |
+| VIOL_EVASION | viol_evasion  |  AWAF / NAP  |  100%  | [Documentation](viol_evasion/) |
+| VIOL_URL  |  viol_url  |  AWAF / NAP  |  100%  | [Documentation](viol_url/) |
+| VIOL_METHOD  |  viol_method  |  AWAF / NAP  |  100%  | [Documentation](viol_method/) |
+| VIOL_HEADER_LENGTH  |  viol_header_length  |  AWAF / NAP  |  100%  | [Documentation](viol_header_length/) |
+| VIOL_COOKIE_LENGTH  |  viol_cookie_length  |  AWAF / NAP  |  100%  | [Documentation](viol_cookie_length/) |
+| VIOL_COOKIE_MODIFIED  |  viol_cookie_modified  |  AWAF / NAP  | 100%  | [Documentation](viol_cookie_modified/) |
+| VIOL_HTTP_RESPONSE_STATUS  |  viol_http_response_status  |  AWAF / NAP  | 100%  | [Documentation](viol_http_response_status/) |
+| VIOL_THREAT_CAMPAIGN  |  viol_threat_campaign |  AWAF / NAP  |  100%  | [Documentation](viol_threat_campaign/) |
+| VIOL_PARAMETER  |  viol_parameter  |  AWAF / NAP  |  100%  | [Documentation](viol_parameter/) |
+| VIOL_MANDATORY_HEADER  |  viol_mandatory_header  |  AWAF / NAP  | 100%  | [Documentation](viol_mandatory_header/) |
+| VIOL_MANDATORY_PARAMETER  | viol_mandatory_parameter   |  AWAF / NAP  | 100%  | [Documentation](viol_mandatory_parameter/) |
+| VIOL_PARAMETER_EMPTY_VALUE  |  viol_parameter_empty_value  |  AWAF / NAP  | 100%  | [Documentation](viol_parameter_empty_value/) |
+| VIOL_PARAMETER_REPEATED  |  viol_parameter_repeated  |  AWAF / NAP  | 100%  | [Documentation](viol_parameter_repeated/) |
+| VIOL_PARAMETER_DATA_TYPE  |  viol_parameter_data_type  |  AWAF / NAP  | 100%  | [Documentation](viol_parameter_data_type/) |
 | VIOL_PARAMETER_LOCATION  |    |  - / -  | 0%  | [Pending]() |
 | VIOL_PARAMETER_NAME_METACHAR  |    |  - / -  |  0%  | [Pending]() |
 | VIOL_PARAMETER_VALUE_METACHAR  |    |  - / -  |  0%  | [Pending]() |
@@ -73,131 +87,144 @@ Violations Supported
 | VIOL_XML_MALFORMED  |    |  - / -  |  0%  | [Pending]() |
 
 
+## How to use the collection
 
+1. Ensure that Ansible is installed on your local machine or Ansible control node. You can find more information regarding the installation on https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
 
-## VIOL_ATTACK_SIGNATURE
-The `signatures` ansible module helps disable/enable signatures either globally or on a specific entity. The entities supported from NAP are ***`urls / headers / parameters / cookies`***
-
-Input:
-- policy_path (location of policy file)
-- signature_id (signature ID that you want to disable/enable)
-- format (json or yaml)
-- enabled (**True** or **False**. Defaults to True)
-- entity_type (urls/headers/parameters/cookies) **optional**
-- entity (the name of the entity you want to configure the signature override) **optional**
-
-Output
-- policy (the output of the policy)
-- msg (Message from the module)
-- chaged (if there was a change in the configuration)
-
-### Examples of using the module on a playbook
-
-1. Disable a signature globaly
-```yml
-- name: Attack signatures
-  hosts: localhost
-  tasks:
-    - name: Disable Signature globaly
-      signatures:
-        signature_id: 13972332
-        enabled: False
-        policy_path: "policy.yaml"
-        format: yaml
-      register: result
-
-    - name: Display Module Output
-      debug:
-        var: result.policy
-
-    - name: Display Module Output
-      debug:
-        var: result.msg
+2. Install the **`skenderidis.f5_waf`** collection that is hosted in Galaxy. By default, Ansible installs the collection in ~/.ansible/collections under the ansible_collections directory.
+```
+ansible-galaxy collection install skenderidis.f5_waf --upgrade
 ```
 
-1. Disable a signature on a URL entity
-```yml
-- name: Attack signatures
+3. Use any of the modules in the **`skenderidis.f5_waf`** collection. In the following example we are running the Ansible playbook to allow a specific **URL**.
+
+    ```yaml
+    - name: VIOL_URL
+      hosts: localhost
+      collections:
+        - skenderidis.f5_awaf         
+      tasks:
+        - name: Allow/Disallow a specific url
+          url:
+            url: index.php
+            enabled: True
+            policy_path: waf_policy.json
+            format: json
+    ```
+
+## How to modify a policy that is stored on a GIT repository
+
+The following ansible playbook shows how you can clone a repository, change the waf policy and then push the policy back to the repository by creating a new branch if it doesnt already exists.
+At the end, the playbook will create a Merge request in order to notify the repository owner that they need to accept the changes done by Ansible.
+
+
+```yaml
+---
+- name: Modifying the Cookie Length Settings
   hosts: localhost
+  collections:
+    - skenderidis.f5_waf
+
   tasks:
-    - name: Disable Signature on a URL entity
-      signatures:
-        signature_id: 13972332
-        enabled: False
-        policy_path: "policy.yaml"
-        entity_type: urls
-        entity: /index.php
-        format: yaml
-      register: result
+    - name: Clean-up. Deleting the Git folder and its contents
+      file:
+        path: git
+        state: absent
 
-    - name: Display Module Output
-      debug:
-        var: result.policy
+    - name: Creating a new Git folder
+      file:
+        path: git
+        state: directory
 
-    - name: Display Module Output
+    - name: Clone Git repository with NAP Policies 
+      git:
+        repo: "{{repo}}" 
+        dest: git  # Specify the local directory where you want to clone the repo
+        version: main  # Specify the branch you want to fetch
+
+    - name: Check if the file exists
+      stat:
+        path: "git/{{policy}}.{{format}}"
+      register: file_stat_result
+
+    - name: Ending playbook because File was not found
+      meta: end_play
+      when: file_stat_result.stat.exists == False
+
+    - name: Checkout Branch
+      shell: |
+        exists=$(git ls-remote --heads origin "{{policy}}")
+        echo $exists
+        if [ -n "$exists" ]; then
+          echo "{{policy}}" branch exists;
+          git branch -a
+          git checkout main
+          git pull
+          git checkout "{{policy}}"
+        else
+          echo "{{policy}}" branch does NOT exist;
+          git branch -a
+          git checkout main
+          git pull
+          git checkout -b"{{policy}}"
+        fi            
+      args:
+        warn: no
+        chdir: git
+
+    - name: Modify signature globaly
+      viol_attack_signature_global:
+        signature_id: "{{sigID}}"
+        enabled: "{{enabled}}"
+        policy_path: "git/{{policy}}.{{format}}"
+        format: "{{format}}"
+      register: policy_output
+
+
+    - name: Show policy output
       debug:
-        var: result.msg
+        var: policy_output
+
+    - name: Ending playbook because No changes in the policy
+      meta: end_play
+      when: policy_output.changed==False or policy_output.failed==True
+
+
+    - name: Commit Changes
+      shell: |
+        git config --global user.email {{email}}
+        git config --global user.name {{user}}
+        git add {{policy}}.{{format}}
+        git commit -m "Cookie max lenth was changed to value:{{value}}, by Tower jobID:{{tower_job_id}} and Tower User:{{tower_user_name}}"
+      args:
+        chdir: git
+
+    - name: Push Changes and create a merge request
+      shell: |
+        git push -u origin HEAD \
+          -o merge_request.create \
+          -o merge_request.title="New Merge Request: $(git branch --show-current)" \
+          -o merge_request.description="This MR was create by the Template:<{{tower_job_template_name}}>" \
+          -o merge_request.target=main \
+          -o merge_request.remove_source_branch \
+          -o merge_request.squash
+      args:
+        warn: no
+        chdir: git
+      register: push_output
+
+    - name: Show push output
+      debug:
+        var: push_output
 ```
 
-1. Disable a signature on a Header entity
-```yml
-- name: Attack signatures
-  hosts: localhost
-  tasks:
-    - name: Disable Signature on a URL entity
-      signatures:
-        signature_id: 13972332
-        enabled: False
-        policy_path: "policy.yaml"
-        entity_type: headers
-        entity: Referer
-        format: yaml
-      register: result
 
-    - name: Display Module Output
-      debug:
-        var: result.policy
 
-    - name: Display Module Output
-      debug:
-        var: result.msg
-```
 
-## VIOL_FILETYPE
+## Support
 
-The `file_types` module helps disable/enable file extensions that have been configured on the `disallowed` list or have not been configured on the explicit `allowed` list. 
+For support, please open a GitHub issue.
 
-Input:
-- policy_path (location of policy file)
-- filetype (extensions that you want to disable/enable)
-- format (json or yaml)
-- enabled (True or False. Defaults to True)
+### License
+[Apache License 2.0](LICENSE)
 
-Output
-- policy (the output of the policy)
-- msg (Message from the module)
-- chaged (if there was a change in the configuration)
-
-### Examples of using the module on a playbook
-
-1. Disable a signature globaly
-```yml
-- name: File Types
-  hosts: localhost
-  tasks:
-    - name: Allow File type
-      signatures:
-        filetype: "bak"
-        policy_path: "policy.yaml"
-        format: yaml
-        enabled: True
-      register: result
-
-    - name: Display Module Output
-      debug:
-        var: result.policy
-
-    - name: Display Module Output
-      debug:
-        var: result.msg
-```

@@ -1,8 +1,9 @@
 # VIOL_POST_DATA_LENGTH module
 
-The **`viol_post_data_length`** module has been created to assist with the false-positive of the `VIOL_POST_DATA_LENGTH` violations. It can modify the configured length on the file type extensions of a NAP/AWAF policy.
-
 The **`viol_post_data_length`** module has been created to assist with the false-positive of the `VIOL_POST_DATA_LENGTH` violations. It can modify the configured post data length on the file type extensions of an NGINX App Protect or an F5 AWAF declarative waf policy.
+
+It's important to note that only specific key/value pairs within the JSON files are modified, while other aspects of the policy remain unchanged.
+In the JSON below you can find the key/values that the module will modify.
 
 ```json
 {
@@ -20,13 +21,13 @@ The **`viol_post_data_length`** module has been created to assist with the false
 
 Below you can find the input/outout parameters for the module
 
-Input:
+**Input**:
 - **policy_path** (location of policy file)
 - **filetype** (name of the file extension that you want to modify the length)
 - **length** (the length that you would like to configure for a spefic file extension)
 - **format** (*json* or *yaml*)
 
-Output
+**Output**:
 - **policy** (Policy output)
 - **msg** (Message from the module)
 - **changed** (True/False)
