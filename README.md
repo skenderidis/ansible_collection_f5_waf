@@ -1,4 +1,4 @@
-# Managing F5 and NGINX waf policies with Ansible collection
+# Managing F5 and NGINX waf policies with Ansible
 In this guide, we'll explore how to leverage this ansible galaxy collection (**`skenderidis.f5_waf`**) to fine-tune waf policies for BIGIP AWAF and NGINX AppProtect, that are stored in JSON or YAML files and are used to implement Security Automation (DevSecOps).
 The collection aims to simplify the process of modifying and updating WAF policies, enabling seamless security automation for your web applications.
 
