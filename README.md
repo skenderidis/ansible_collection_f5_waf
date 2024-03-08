@@ -119,38 +119,43 @@ At the end, the playbook will create a Merge request in order to notify the repo
 
 
 ```yaml
----
 - name: Modifying the Cookie Length Settings
   hosts: localhost
   collections:
     - skenderidis.f5_waf
 
   tasks:
+    # Clean-up task to delete the existing Git folder and its contents
     - name: Clean-up. Deleting the Git folder and its contents
       file:
         path: git
         state: absent
 
+    # Creating a new Git folder
     - name: Creating a new Git folder
       file:
         path: git
         state: directory
 
+    # Cloning Git repository with NAP Policies 
     - name: Clone Git repository with NAP Policies 
       git:
-        repo: "{{repo}}" 
+        repo: "{{repo}}"  # The URL of the Git repository to clone
         dest: git  # Specify the local directory where you want to clone the repo
         version: main  # Specify the branch you want to fetch
 
+    # Checking if the policy file exists
     - name: Check if the file exists
       stat:
         path: "git/{{policy}}.{{format}}"
       register: file_stat_result
 
+    # Ending the playbook if the policy file is not found
     - name: Ending playbook because File was not found
       meta: end_play
       when: file_stat_result.stat.exists == False
 
+    # Checking out the specified branch or creating a new one if it doesn't exist
     - name: Checkout Branch
       shell: |
         exists=$(git ls-remote --heads origin "{{policy}}")
@@ -167,44 +172,47 @@ At the end, the playbook will create a Merge request in order to notify the repo
           git checkout main
           git pull
           git checkout -b"{{policy}}"
-        fi            
+        fi
       args:
         warn: no
         chdir: git
 
-    - name: Modify signature globaly
+    # Modifying the signature globally
+    - name: Modify signature globally
       viol_attack_signature_global:
-        signature_id: "{{sigID}}"
-        enabled: "{{enabled}}"
-        policy_path: "git/{{policy}}.{{format}}"
-        format: "{{format}}"
+        signature_id: "{{sigID}}"  # The ID of the signature to modify
+        enabled: "{{enabled}}"  # Whether the signature is enabled or disabled
+        policy_path: "git/{{policy}}.{{format}}"  # Path to the policy file
+        format: "{{format}}"  # Format of the policy file (e.g., JSON or YAML)
       register: policy_output
 
-
+    # Displaying the policy output for debugging
     - name: Show policy output
       debug:
         var: policy_output
 
+    # Ending the playbook if no changes were made to the policy
     - name: Ending playbook because No changes in the policy
       meta: end_play
-      when: policy_output.changed==False or policy_output.failed==True
+      when: policy_output.changed == False or policy_output.failed == True
 
-
+    # Committing changes to the Git repository
     - name: Commit Changes
       shell: |
         git config --global user.email {{email}}
         git config --global user.name {{user}}
         git add {{policy}}.{{format}}
-        git commit -m "Cookie max lenth was changed to value:{{value}}, by Tower jobID:{{tower_job_id}} and Tower User:{{tower_user_name}}"
+        git commit -m "Cookie max length was changed to value:{{value}}, by Tower jobID:{{tower_job_id}} and Tower User:{{tower_user_name}}"
       args:
         chdir: git
 
+    # Pushing changes and creating a merge request
     - name: Push Changes and create a merge request
       shell: |
         git push -u origin HEAD \
           -o merge_request.create \
           -o merge_request.title="New Merge Request: $(git branch --show-current)" \
-          -o merge_request.description="This MR was create by the Template:<{{tower_job_template_name}}>" \
+          -o merge_request.description="This MR was created by the Template:<{{tower_job_template_name}}>" \
           -o merge_request.target=main \
           -o merge_request.remove_source_branch \
           -o merge_request.squash
@@ -213,13 +221,11 @@ At the end, the playbook will create a Merge request in order to notify the repo
         chdir: git
       register: push_output
 
+    # Displaying push output for debugging
     - name: Show push output
       debug:
         var: push_output
 ```
-
-
-
 
 ## Support
 
