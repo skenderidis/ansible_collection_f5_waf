@@ -2,21 +2,6 @@
 
 The **`viol_threat_campaign`** module has been created to assist with the false-positive of the `VIOL_THREAT_CAMPAIGN` violations. It can disable/enable specific theat campaign signatures of an NGINX App Protect or an F5 AWAF declarative waf policy.
 
-It's important to note that only specific key/value pairs within the JSON files are modified, while other aspects of the policy remain unchanged.
-In the JSON below you can find the key/values that the module will modify.
-
-  ```json
-  {
-    "policy": {
-      "threat-campaigns": [
-        {
-          "name": "PHPUnit Eval_stdin Remote Code Execution",
-          "isEnabled": false
-        }
-      ]
-    }
-  }
-  ```
 
 Below you can find the input/outout parameters for the module
 
@@ -31,8 +16,24 @@ Below you can find the input/outout parameters for the module
 - **msg** (Message from the module)
 - **changed** (True/False)
 
-
 > Note: By using this module the policy file will be updated with the new configuration.
+
+> [!IMPORTANT] 
+It's important to note that only specific key/value pairs within the JSON files are modified, while other aspects of the policy remain unchanged.
+In the JSON below you can find the key/values that the module will modify.
+
+```json
+{
+  "policy": {
+    "threat-campaigns": [
+      {
+        "name": "PHPUnit Eval_stdin Remote Code Execution",
+        "isEnabled": false
+      }
+    ]
+  }
+}
+```
 
 ## Example of using the ansible module with a YAML waf policy
 

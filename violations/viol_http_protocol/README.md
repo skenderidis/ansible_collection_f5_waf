@@ -23,6 +23,22 @@ The **`http_protocol`** module has been created to assist with the false-positiv
 1. Bad host header value
 1. Check maximum number of cookies
 
+Below you can find the input/outout parameters for the module
+
+**Input**:
+- **policy_path** (location of policy file)
+- **http_protocol** (Sub-violation that you want to disable/enable)
+- **format** (*json* or *yaml*)
+- **enabled** (*True* or *False*. Defaults to True)
+
+**Output**:
+- **policy** (Policy output)
+- **msg** (Message from the module)
+- **changed** (True/False)
+
+> Note: By using this module the policy file will be updated with the new configuration.
+
+> [!IMPORTANT] 
 It's important to note that only specific key/value pairs within the JSON files are modified, while other aspects of the policy remain unchanged.
 In the JSON below you can find the key/values that the module will modify.
 
@@ -40,21 +56,6 @@ In the JSON below you can find the key/values that the module will modify.
   }
 }
 ```
-
-Below you can find the input/outout parameters for the module
-
-**Input**:
-- **policy_path** (location of policy file)
-- **http_protocol** (Sub-violation that you want to disable/enable)
-- **format** (*json* or *yaml*)
-- **enabled** (*True* or *False*. Defaults to True)
-
-**Output**:
-- **policy** (Policy output)
-- **msg** (Message from the module)
-- **changed** (True/False)
-
-> Note: By using this module the policy file will be updated with the new configuration.
 
 ## Example of using the ansible module with a YAML waf policy
 1. Input policy `waf_policy.yaml` 

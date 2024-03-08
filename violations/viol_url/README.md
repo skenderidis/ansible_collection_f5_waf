@@ -2,19 +2,6 @@
 
 The **`url`** module has been created to assist with the false-positive of the `VIOL_URL` violations. It can allow/disallow urls on an NGINX App Protect or an F5 AWAF declarative waf policy.
 
-```json
-{
-  "policy": {
-    "urls": [
-      {
-        "name": "index.php",
-        "allowed": true
-      }
-    ]
-  }
-}
-```
-
 Below you can find the input/outout parameters for the module
 
 Input:
@@ -29,6 +16,24 @@ Output
 - **changed** (True/False)
 
 > Note: By using this module the policy file will be updated with the new configuration.
+
+> [!IMPORTANT] 
+It's important to note that only specific key/value pairs within the JSON files are modified, while other aspects of the policy remain unchanged.
+In the JSON below you can find the key/values that the module will modify.
+
+```json
+{
+  "policy": {
+    "urls": [
+      {
+        "name": "index.php",
+        "allowed": true
+      }
+    ]
+  }
+}
+```
+
 
 ## Example of using the ansible module with a YAML waf policy
 

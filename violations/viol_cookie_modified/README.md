@@ -2,6 +2,22 @@
 
 The **`viol_cookie_modified`** module has been created to assist with the false-positive of the `VIOL_COOKIE_MODIFIED`violations. It can configure the enforcementType of a cookie to either `allow` or `enforced` based on the cookie settings of the NGINX App Protect or F5 AWAF declarative waf policy.
 
+Below you can find the input/outout parameters for the module
+
+**Input**:
+- **policy_path** (location of policy file)
+- **enforcementType** (the enforcementType of the cookie. This can be either `allow`, `enforce`)
+- **cookie_name** (name of the cookie that you want to modify the enforcementType)
+- **format** (*json* or *yaml*)
+
+**Output**:
+- **policy** (Policy output)
+- **msg** (Message from the module)
+- **changed** (True/False)
+
+> Note: By using this module the policy file will be updated with the new configuration.
+
+> [!IMPORTANT] 
 It's important to note that only specific key/value pairs within the JSON files are modified, while other aspects of the policy remain unchanged.
 In the JSON below you can find the key/values that the module will modify.
 
@@ -17,21 +33,6 @@ In the JSON below you can find the key/values that the module will modify.
   }
 }
 ```
-
-Below you can find the input/outout parameters for the module
-
-**Input**:
-- **policy_path** (location of policy file)
-- **enforcementType** (the enforcementType of the cookie. This can be either `allow`, `enforce`)
-- **cookie_name** (name of the cookie that you want to modify the enforcementType)
-- **format** (*json* or *yaml*)
-
-**Output**:
-- **policy** (Policy output)
-- **msg** (Message from the module)
-- **changed** (True/False)
-
-> Note: By using this module the policy file will be updated with the new configuration.
 
 ## Example of using the ansible module with a YAML waf policy
 1. Input policy `waf_policy.yaml` 

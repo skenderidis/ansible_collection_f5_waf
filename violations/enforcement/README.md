@@ -19,7 +19,16 @@ Output
 
 > Note: By using this module the policy file will be updated with the new configuration.
 
-> It's important to note that only specific key/value pairs within the JSON files are modified, while other aspects of the policy remain unchanged.
+> [!IMPORTANT] 
+> It's important to note that only specific key/value pairs within the JSON files are modified, while other aspects of the policy remain unchanged. In the JSON below you can find the key/values that the module will modify.
+
+```json
+{
+  "policy": {
+    "enforcementMode": "transparent",
+  }
+}
+```
 
 ## Example of using the ansible module with a YAML waf policy
 1. Input policy `waf_policy.yaml` 

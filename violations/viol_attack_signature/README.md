@@ -1,6 +1,6 @@
-# VIOL_ATTACK_SIGNATURE module
+# VIOL_ATTACK_SIGNATURE_ENTITY module
 
-The **viol_attack_signature** module has been created to assist with the false-positive of the `VIOL_ATTACK_SIGNATURE` violations. It can can disable/enable signatures on a specific entity on the NGINX App Protect or F5 AWAF declarative waf policy. The supported entities are the following: 
+The **viol_attack_signature_entity** module has been created to assist with the false-positive of the `VIOL_ATTACK_SIGNATURE` violations. It can can disable/enable signatures on a specific entity on the NGINX App Protect or F5 AWAF declarative waf policy. The supported entities are the following: 
 1. `urls`
 2. `headers`
 3. `parameters`
@@ -23,7 +23,26 @@ Output
 
 > Note: By using this module the policy file will be updated with the new configuration.
 
-> It's important to note that only specific key/value pairs within the JSON files are modified, while other aspects of the policy remain unchanged.
+> [!IMPORTANT] 
+> It's important to note that only specific key/value pairs within the JSON files are modified, while other aspects of the policy remain unchanged. In the JSON below you can find the key/values that the module will modify.
+
+```json
+{
+  "policy": {
+    "urls": [
+      {
+        "name": "index.php",
+        "signatureOverrides": [
+          {
+            "signatureId": 204855,
+            "enabled": true
+          }
+        ]
+      }
+    ]
+  }
+}
+```
 
 ## Example of using the ansible module with a YAML waf policy
 1. Input policy `waf_policy.yaml` 
@@ -49,7 +68,7 @@ Output
         - skenderidis.f5_awaf   
       tasks:
         - name: Disable signature on an entity
-          viol_attack_signature:
+          viol_attack_signature_entity:
             policy_path: waf_policy.yaml
             signature_id: 200001834
             enabled: true
@@ -102,7 +121,7 @@ Output
         - skenderidis.f5_awaf   
       tasks:
         - name: Disable signature on an entity
-          viol_attack_signature:
+          viol_attack_signature_entity:
             policy_path: waf_policy.json
             signature_id: 200001834
             enabled: true

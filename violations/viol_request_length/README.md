@@ -2,6 +2,22 @@
 
 The **`viol_request_length`** module has been created to assist with the false-positive of the `VIOL_REQUEST_LENGTH` violations. It can modify the filetype's configured request length of the NGINX App Protect or the F5 AWAF declarative waf policy.
 
+Below you can find the input/outout parameters for the module
+
+**Input**:
+- **policy_path** (location of policy file)
+- **filetype** (name of the file extension that you want to modify the length)
+- **length** (the length that you would like to configure for a spefic file extension)
+- **format** (*json* or *yaml*)
+
+**Output**:
+- **policy** (Policy output)
+- **msg** (Message from the module)
+- **changed** (True/False)
+
+> Note: By using this module the policy file will be updated with the new configuration.
+
+> [!IMPORTANT] 
 It's important to note that only specific key/value pairs within the JSON files are modified, while other aspects of the policy remain unchanged.
 In the JSON below you can find the key/values that the module will modify.
 
@@ -18,23 +34,6 @@ In the JSON below you can find the key/values that the module will modify.
   }
 }
 ```
-
-Below you can find the input/outout parameters for the module
-
-**Input**:
-- **policy_path** (location of policy file)
-- **filetype** (name of the file extension that you want to modify the length)
-- **length** (the length that you would like to configure for a spefic file extension)
-- **format** (*json* or *yaml*)
-
-**Output**:
-- **policy** (Policy output)
-- **msg** (Message from the module)
-- **changed** (True/False)
-
-> Note: By using this module the policy file will be updated with the new configuration.
-
-
 ## Example of using the ansible module with a YAML waf policy
 1. Input policy `waf_policy.yaml`  
     ```yaml
