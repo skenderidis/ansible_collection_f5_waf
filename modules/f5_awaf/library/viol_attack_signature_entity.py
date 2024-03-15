@@ -89,6 +89,8 @@ def main():
     except Exception as e:
         module.fail_json(msg=f"Failed to read file: {str(e)}")
 
+    if entity == "":
+      entity="*"
 
     # Decode policy content based on format
     try:
