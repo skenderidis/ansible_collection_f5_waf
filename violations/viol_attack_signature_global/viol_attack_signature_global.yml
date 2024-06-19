@@ -17,4 +17,4 @@
 
     - name: Display Module Output
       debug:
-        var: result.msg        
+        var: result.msg

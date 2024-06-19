@@ -54,9 +54,11 @@ In the JSON below you can find the key/values that the module will modify.
     ```yaml
     - name: File Types
       hosts: localhost
+      collections:
+        - skenderidis.f5_awaf         
       tasks:
         - name: Allow/Disallow a specific filetype
-          file_types:
+          viol_filetype:
             policy_path: waf_policy.yaml
             filetype: php
             enabled: True
@@ -101,9 +103,11 @@ In the JSON below you can find the key/values that the module will modify.
     ```yaml
     - name: File Types
       hosts: localhost
+      collections:
+        - skenderidis.f5_awaf      
       tasks:
         - name: Allow/Disallow a specific filetype
-          file_types:
+          viol_filetype:
             policy_path: waf_policy.json
             filetype: php
             enabled: True

@@ -54,6 +54,8 @@ In the JSON below you can find the key/values that the module will modify.
     ```yaml
     - name: VIOL_COOKIE_MODIFIED
       hosts: localhost
+      collections:
+        - skenderidis.f5_awaf       
       tasks:
         - name: Modify the enforcementType of cookies
           viol_cookie_modified:
@@ -100,6 +102,8 @@ In the JSON below you can find the key/values that the module will modify.
     ```yaml
     - name: VIOL_COOKIE_MODIFIED
       hosts: localhost
+      collections:
+        - skenderidis.f5_awaf       
       tasks:
         - name: Modify the enforcementType of cookies
           viol_cookie_modified:

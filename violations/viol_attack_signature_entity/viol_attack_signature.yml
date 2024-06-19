@@ -4,7 +4,7 @@
     - skenderidis.f5_awaf   
   tasks:
     - name: Disable signature on an entity
-      viol_attack_signature:
+      viol_attack_signature_entity:
         policy_path: waf_policy.yaml
         signature_id: 200001834
         enabled: true

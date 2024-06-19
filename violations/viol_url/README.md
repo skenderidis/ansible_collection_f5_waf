@@ -60,7 +60,7 @@ In the JSON below you can find the key/values that the module will modify.
         - skenderidis.f5_awaf         
       tasks:
         - name: Allow/Disallow a specific url
-          url:
+          viol_url:
             url: index.php
             enabled: True
             policy_path: waf_policy.yaml
@@ -111,7 +111,7 @@ In the JSON below you can find the key/values that the module will modify.
         - skenderidis.f5_awaf         
       tasks:
         - name: Allow/Disallow a specific url
-          url:
+          viol_url:
             url: index.php
             enabled: True
             policy_path: waf_policy.json

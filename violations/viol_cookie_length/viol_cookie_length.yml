@@ -4,7 +4,7 @@
     - skenderidis.f5_awaf   
   tasks:
     - name: Modify the allowed length of cookies
-      cookie_length:
+      viol_cookie_length:
         policy_path: waf_policy.yaml
         value: 4096
         format: yaml

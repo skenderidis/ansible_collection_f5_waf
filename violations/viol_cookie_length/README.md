@@ -54,7 +54,7 @@ In the JSON below you can find the key/values that the module will modify.
         - skenderidis.f5_awaf
       tasks:
         - name: Modify the allowed length of cookies
-          cookie_length:
+          viol_cookie_length:
             value: 4096
             policy_path: waf_policy.yaml
             format: yaml
@@ -102,7 +102,7 @@ In the JSON below you can find the key/values that the module will modify.
         - skenderidis.f5_awaf
       tasks:
         - name: Modify the allowed length of cookies
-          cookie_length:
+          viol_cookie_length:
             value: 4096
             policy_path: waf_policy.json
             format: json
